@@ -2,17 +2,27 @@ import React, { useEffect, useState } from "react";
 import { Form, Button } from 'react-bootstrap';
 import { login } from "./api";
 import { useNavigate } from "react-router-dom";
-import { NavLink, Routes, Route } from "react-router-dom";
+import { NavLink, Link, Routes, Route } from "react-router-dom";
 import jwt_decode from "jwt-decode"; 
+import ReCAPTCHA from "react-google-recaptcha";
+import { createBrowserHistory } from 'history';
+
+// import ReCAPTCHA from "react-google-recaptcha"
+const history = createBrowserHistory();
+function goToSignUp(){
+
+  history.push('/register')
+  window.location.reload();
+}
 
 function Login() {
-    
+  const history = createBrowserHistory();
     const [username, setUsername] = useState(''); 
     const [password, setPassword] = useState(''); 
     const [user, setUser] = useState(''); 
     const [errors, setErrors] = useState({});
     const navigate = useNavigate(); 
-   
+
     const handleSubmit = (event) => {
       // form validation 
       const errors = {};
@@ -32,10 +42,12 @@ function Login() {
               'username': username,
               'password': password
           }; 
-  
+          
           login(user).then(data => {
               //window.location.reload()
-              navigate("/home") 
+              //navigate("/home")
+              history.push('/login');
+              window.location.reload();
               console.log(data["data"])
           });
         }
@@ -80,7 +92,6 @@ function Login() {
 
 
 
-
   
   useEffect(() => {
     const google = window.google;  
@@ -93,8 +104,7 @@ function Login() {
     google.accounts.id.renderButton (
       document.getElementById("signInDiv"),
         {theme : "outline" , size : "large"}
-    ); 
-
+    );
     google.accounts.id.prompt()
   }, [])
 
@@ -169,7 +179,7 @@ function Login() {
                     <div className="form-title">
                       <h3>Log In</h3>
                       <p>
-                        New Member? <NavLink to="/Register"> Sign Up</NavLink>
+                        New Member? <Link onClick={goToSignUp}> Sign Up</Link> 
                       </p>
                     </div>
                     <form className="w-100" onSubmit={handleSubmit}>
@@ -204,13 +214,12 @@ function Login() {
                             ></i>
                           </div>
                           {errors.password && <p  style={{ fontSize: 12, color: "red" }}>{errors.password}</p>}
-
                         </div>
                         <div className="col-12">
                           <div className="form-agreement form-inner d-flex justify-content-between flex-wrap">
                             <div className="form-group">
                               <input type="checkbox" id="html" />
-                              <label for="html">
+                              <label htmlFor="html">
                                 I agree to the <a href="#">Terms & Policy</a>
                               </label>
                             </div>
@@ -269,6 +278,7 @@ function Login() {
               </div>
             </div>
           </div>
+          {/* <script src="https://www.google.com/recaptcha/api.js?&render=explicit" async defer></script> */}
         </center>
       </>
     );
