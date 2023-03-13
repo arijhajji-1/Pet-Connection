@@ -35,7 +35,7 @@ useScript("./assets/js/SmoothScroll.js");
 useScript("./assets/js/jquery.nice-number.min.js");
 useScript("./assets/js/jquery.magnific-popup.min.js");
 useScript("./assets/js/masonry.pkgd.min.js");
-  useScript("./assets/js/main.js");
+useScript("./assets/js/main.js");
   
 
   const [user, setUser] = useState(null)

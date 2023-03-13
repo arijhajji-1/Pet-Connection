@@ -1,61 +1,129 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button } from 'react-bootstrap';
-import { login, register ,editProfil} from "./api";
-import { useNavigate } from "react-router-dom";
+import { login, register, editProfil } from "./api";
+import { Await} from "react-router-dom";
 import { NavLink, Routes, Route } from "react-router-dom";
+import { useParams, useNavigate } from 'react-router-dom';
+
 
 import axios from "axios";
+//import { AwesomeNotifications } from 'awesome-notifications';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+
+
+
+
+
+const schema = yup.object().shape({
+  username: yup.string()
+      .required()
+      .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d]+$/, "Username must contain at least one letter, and no spiciness")
+      .max(20, "Username cannot exceed 20 characters")
+      .min(3,"Username must exceed 3 characters"),
+
+
+  name: yup.string()
+       .required()
+       .matches(/^[^\d]+$/, "name must not contain numbers")
+       .max(20, "name cannot exceed 20 characters")
+       .min(3,"name must exceed 3 characters"),
+
+
+  email: yup.string()
+      .required()
+  // .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d]+@(?:[a-zA-Z\d]+\.)+(?:com|tn)$/,'email must be in this form exp@exp.com ou exp@exp.tn')
+      .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d._]+@(?:[a-zA-Z\d]+\.)+(?:com|tn)$/,'email must be in this form exp@exp.com ou exp@exp.tn'), // accepte . ou milieu
+
+
+      
+
+
+
+
+  location: yup.string()
+       .required()
+       .matches(/^[A-Z][a-zA-Z]*$/, 'location must begin with an uppercase letter and must contain only letters.')
+       .max(20, "location cannot exceed 20 characters")
+       .min(3,"location must exceed 3 characters"),
+
+
+
+  phone: yup.string()
+       .required()
+       .matches(/^[0-9]{8}$/, 'phone field must contain 8 digits without spaces or special characters.'),
+     
+
+
+  image: yup.mixed()
+  .required()
+  .test('fileFormat', 'The file must be in JPEG, PNG or JPG format', (value) =>
+    value && ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type)
+  )
+
+  });
+
+
+ 
+ 
 
 
 
 function Profile() {
 
-  const [user, setUser] = useState({});
-  const [imageSrc, setImageSrc] = useState('');
+  const navigate = useNavigate();
+  const param = useParams();
+  const [imageSrc, setImageSrc] = useState(''); // importer image user 
 
-  const [formData, setFormData] = useState({
+
+
+  // const [user, setUser] = useState({});
+
+  const [user, setUser] = useState({
     username: '',
     name: '',
     email: '',
     location: '',
     phone: '',
-    image: null
+    image: null,
+    password:''
+
   });
 
+  const [formErrors, setFormErrors] = useState({});
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+
   useEffect(() => {
+
     const userFromLocalStorage = JSON.parse(localStorage.getItem('user'));
-    
-    console.log("iduserconnecte "+userFromLocalStorage._id)
 
-    //////////////get connected user////////////////
-    // const userconnecte = editProfil(user._id,formDataToSend)
-
-
-
-
-
-
-    //////////////////////////////////////////////
-
+    console.log("iduserconnecte " + userFromLocalStorage._id)
 
     setUser(userFromLocalStorage);
-    setFormData({
-      "username": userFromLocalStorage.username,
-      "name": userFromLocalStorage.name,
-      "email": userFromLocalStorage.email,
-      "location": userFromLocalStorage.location,
-      "phone": userFromLocalStorage.phone,
-      "image": null,
-      "password": userFromLocalStorage.password,
-    });
+
+    // setFormData({
+    //   "username": userFromLocalStorage.username,
+    //   "name": userFromLocalStorage.name,
+    //   "email": userFromLocalStorage.email,
+    //   "location": userFromLocalStorage.location,
+    //   "phone": userFromLocalStorage.phone,
+    //   "image": null,
+    //   "password": userFromLocalStorage.password,
+    // });
 
 
+    //////////importer image user 
     if (userFromLocalStorage.image) {
       axios.get(`http://localhost:3000/user/imageUser/${userFromLocalStorage._id}/image`, { responseType: 'blob' })
         .then(res => {
           const url = URL.createObjectURL(res.data);
           setImageSrc(url);
-          console.log("url image--->"+ url)
+          console.log("url image--->" + url)
 
         })
         .catch(error => {
@@ -67,81 +135,115 @@ function Profile() {
 
 
 
-
     //console.log("user id ---> "+ user._id)
+
   }, []);
 
-  const handleChange = e => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
 
-  const handleFileChange = e => {
-    setFormData({
-      ...formData,
+  //////recuperer les nouvelles valeurs de formulaire
+
+
+  function onValueChange(e) {
+    setUser({ ...user, [e.target.name]: e.target.value });
+    if (formSubmitted) {
+      schema
+        .validateAt(e.target.name, { ...user, [e.target.name]: e.target.value })
+        .then(() => setFormErrors({ ...formErrors, [e.target.name]: undefined }))
+        .catch((err) => setFormErrors({ ...formErrors, [e.target.name]: err.message }));
+    }
+  }
+
+
+
+  const onFileHandle = e => {
+    setUser({
+      ...user,
       image: e.target.files[0]
     });
   };
 
+
+
+  // const handleFileChange = e => {
+  //   setFormData({
+  //     ...formData,
+  //     image: e.target.files[0]
+  //   });
+  // };
+
+
+  ////// envoi de formulaire
   const handleSubmit = async e => {
     e.preventDefault();
-
-    const { username, name, email, location, phone, image,password } = formData;
-
-    const updatedUser = {
-      username,
-      name,
-      email,
-      location,
-      phone,
-      image,
-      password
-
-      
-    
-
-    };
+    setFormSubmitted(true);
 
 
-    const formDataToSend = new FormData();
-
-    for (let key in updatedUser) {
-      formDataToSend.append(key, updatedUser[key]);
-    }
-
-    //console.log(user._id)
-  //  console.log(updatedUser)
     try {
-      const res = editProfil(user._id,formDataToSend)
-
-      console.log("--> "+ JSON.stringify(res.data.user));
+      await schema.validate(user, { abortEarly: false });
 
 
 
+      const formData = new FormData();
+      formData.append("username", user.username);
+      formData.append("name", user.name);
+      formData.append("email", user.email);
+      formData.append("location", user.location);
+      formData.append("phone", user.phone);
+      formData.append("image", user.image);
 
+
+
+      const res = editProfil(user._id, formData).then(
+        notify()
+      )
+
+      console.log("--> " + JSON.stringify(res.data.user));
       localStorage.setItem("user", res.data.user);
 
+      // if (res.status === 200)
+      //   navigate("/profile");
+      //   console.log('Updated')
 
-
-      // const res = await axios.put(`/updateuser/${user._id}`, formDataToSend);
-    console.log(res);
-      // Do something with the updated user data, e.g. set it in state
-     // setUser(res.data.user);
-    //  : localStorage.setItem('user', JSON.stringify(res.data.user));
 
     } catch (error) {
       console.log(error);
-     
+      const newErrors = {};
+      error.inner.forEach((e) => (newErrors[e.path] = e.message));
+      setFormErrors(newErrors);
+
     }
+
+
   };
+
+
+  const notify = () => toast.success(' 👤 User is Modified !', {
+    position: "bottom-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });
+
+
+
+
 
 
 
   return (
     <>
-    <div>
+      <div>
+        {/* <div>
+      <button onClick={notify}>Show Notification</button>
+    </div> */}
+
+
+        <ToastContainer />
+
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
         <div className="main-content">
           {/* Top navbar */}
@@ -204,7 +306,7 @@ function Profile() {
             </div>
           </nav>
           {/* Header */}
-          <div className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style={{height:"30vh", backgroundImage: 'url(https://raw.githubusercontent.com/creativetimofficial/argon-dashboard/gh-pages/assets-old/img/theme/profile-cover.jpg)', backgroundSize: 'cover', backgroundPosition: 'center top'}}>
+          <div className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style={{ height: "30vh", backgroundImage: 'url(https://raw.githubusercontent.com/creativetimofficial/argon-dashboard/gh-pages/assets-old/img/theme/profile-cover.jpg)', backgroundSize: 'cover', backgroundPosition: 'center top' }}>
             {/* Mask */}
             <span className="mask bg-gradient-default opacity-8" />
             {/* Header container */}
@@ -259,7 +361,7 @@ function Profile() {
                     </div>
                     <div className="text-center">
                       <h3>
-                       {user.name}<span className="font-weight-light"></span>
+                        {user.name}<span className="font-weight-light"></span>
                       </h3>
                       <div className="h5 font-weight-300">
                         <i className="ni location_pin mr-2" /> {user.email}
@@ -273,15 +375,15 @@ function Profile() {
 
                       </div>
                       <div>
-                        <i className="ni education_hat mr-2" />Location : {user.location} 
+                        <i className="ni education_hat mr-2" />Location : {user.location}
                       </div>
                       <hr className="my-4" />
-                      <a style={{color: 'white'}}>Show more</a>
+                      <a style={{ color: 'white' }}>Show more</a>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               <div className="col-xl-8 order-xl-1">
                 <div className="card bg-secondary shadow">
                   <div className="card-header bg-white border-0">
@@ -291,8 +393,8 @@ function Profile() {
                       </div>
 
                       {/*  */}
-{/* -------------------------------------------------------------------------------------------------------------------------------- */}
-{/* -------------------------------------------------------------------------------------------------------------------------------- */}
+                      {/* -------------------------------------------------------------------------------------------------------------------------------- */}
+                      {/* -------------------------------------------------------------------------------------------------------------------------------- */}
 
                       <div className="col-4 text-right">
                         {/* <a href="#!" className="btn btn-sm btn-primary">Modifier Profile</a> */}
@@ -300,57 +402,80 @@ function Profile() {
                     </div>
                   </div>
                   <div className="card-body">
-                    <form  onSubmit={handleSubmit} enctype="multipart/form-data">
+                    <form onSubmit={handleSubmit} enctype="multipart/form-data">
                       <h6 className="heading-small text-muted mb-4">INFORMATIONS DE L'UTILISATEUR</h6>
                       <div className="pl-lg-4">
                         <div className="row">
                           <div className="col-lg-6">
                             <div className="form-group focused">
+
+
+
                               <label className="form-control-label" htmlFor="input-username">Username</label>
-                              <input type="text" name="username" value={formData.username}onChange={handleChange}  id="input-username" className="form-control form-control-alternative" placeholder="Username"/>
+                              <input type="text" name="username" value={user.username} onChange={onValueChange} id="input-username" className="form-control form-control-alternative" placeholder="Username" />
+
+                              {formErrors.username && <p>{formErrors.username}</p>}
+
+
                             </div>
                           </div>
                           <div className="col-lg-6">
                             <div className="form-group">
+
                               <label className="form-control-label" htmlFor="input-email">Email address</label>
-                              <input type="email" name="email" value={formData.email}onChange={handleChange} id="input-email"   className="form-control form-control-alternative"  placeholder="Email" />
+                              <input type="email" name="email" value={user.email} onChange={onValueChange} id="input-email" className="form-control form-control-alternative" placeholder="Email" />
+                              {formErrors.email && <p>{formErrors.email}</p>}
+
+
                             </div>
                           </div>
                         </div>
                         <div className="row">
                           <div className="col-lg-6">
                             <div className="form-group focused">
+
                               <label className="form-control-label" htmlFor="input-first-name">Name</label>
-                              <input  type="text" name="name" value={formData.name} onChange={handleChange} id="input-first-name" className="form-control form-control-alternative" placeholder="name"/>
+                              <input type="text" name="name" value={user.name} onChange={onValueChange} id="input-first-name" className="form-control form-control-alternative" placeholder="name" />
+                              {formErrors.name && <p>{formErrors.name}</p>}
+
                             </div>
                           </div>
                           <div className="col-lg-6">
                             <div className="form-group focused">
+
                               <label className="form-control-label" htmlFor="input-last-name">Location</label>
-                              <input type="text" name="location" value={formData.location} onChange={handleChange} id="input-last-name" className="form-control form-control-alternative" placeholder="Location"  />
+                              <input type="text" name="location" value={user.location} onChange={onValueChange} id="input-last-name" className="form-control form-control-alternative" placeholder="Location" />
+                              {formErrors.location && <p>{formErrors.location}</p>}
+
                             </div>
                           </div>
 
                           <div className="col-lg-6">
                             <div className="form-group focused">
+
                               <label className="form-control-label" htmlFor="input-last-name">Phone number</label>
-                              <input   type="text" name="phone" value={formData.phone} onChange={handleChange} id="input-last-name" className="form-control form-control-alternative" placeholder="phone number" />
+                              <input type="text" name="phone" value={user.phone} onChange={onValueChange} id="input-last-name" className="form-control form-control-alternative" placeholder="phone number" />
+                              {formErrors.phone && <p>{formErrors.phone}</p>}
+
                             </div>
                           </div>
                           <div className="col-lg-6">
                             <div className="form-group focused">
+
                               <label className="form-control-label" htmlFor="input-last-name">Image</label>
-                              <input type="file"name="image"accept="image/*"onChange={handleFileChange} id="input-last-name" className="form-control form-control-alternative" placeholder="image"/>
+                              <input type="file" name="image" accept="image/*" onChange={onFileHandle} id="input-last-name" className="form-control form-control-alternative" placeholder="image" />
+                              {formErrors.image && <p>{formErrors.image}</p>}
+
                             </div>
                           </div>
                         </div>
                       </div>
-                       <div className="col-12 text-right mr-5">
-                        <button type="submit"   className="btn btn-sm btn-primary">Modifier Profile</button >
+                      <div className="col-12 text-right mr-5">
+                        <button type="submit" className="btn btn-sm btn-primary">Modifier Profile</button >
                       </div>
                     </form>
- {/*-------------------------------------------------------------------------------------------------------------------  */}
-  {/*-------------------------------------------------------------------------------------------------------------------  */}
+                    {/*-------------------------------------------------------------------------------------------------------------------  */}
+                    {/*-------------------------------------------------------------------------------------------------------------------  */}
 
                   </div>
 
@@ -359,12 +484,12 @@ function Profile() {
             </div>
           </div>
         </div>
-    
+
       </div>
 
-   
 
-    
+
+
 
 
 
@@ -374,7 +499,7 @@ function Profile() {
 
 
 
-                    }
+}
 
 export default Profile;
 
