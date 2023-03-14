@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button } from 'react-bootstrap';
 import { login, register, editProfil } from "./api";
-import { Await} from "react-router-dom";
+import { Await } from "react-router-dom";
 import { NavLink, Routes, Route } from "react-router-dom";
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -21,55 +21,55 @@ import * as yup from "yup";
 
 const schema = yup.object().shape({
   username: yup.string()
-      .required()
-      .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d]+$/, "Username must contain at least one letter, and no spiciness")
-      .max(20, "Username cannot exceed 20 characters")
-      .min(3,"Username must exceed 3 characters"),
+    .required()
+    .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d]+$/, "Username must contain at least one letter, and no spiciness")
+    .max(20, "Username cannot exceed 20 characters")
+    .min(3, "Username must exceed 3 characters"),
 
 
   name: yup.string()
-       .required()
-       .matches(/^[^\d]+$/, "name must not contain numbers")
-       .max(20, "name cannot exceed 20 characters")
-       .min(3,"name must exceed 3 characters"),
+    .required()
+    .matches(/^[^\d]+$/, "name must not contain numbers")
+    .max(20, "name cannot exceed 20 characters")
+    .min(3, "name must exceed 3 characters"),
 
 
   email: yup.string()
-      .required()
-  // .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d]+@(?:[a-zA-Z\d]+\.)+(?:com|tn)$/,'email must be in this form exp@exp.com ou exp@exp.tn')
-      .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d._]+@(?:[a-zA-Z\d]+\.)+(?:com|tn)$/,'email must be in this form exp@exp.com ou exp@exp.tn'), // accepte . ou milieu
+    .required()
+    // .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d]+@(?:[a-zA-Z\d]+\.)+(?:com|tn)$/,'email must be in this form exp@exp.com ou exp@exp.tn')
+    .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d._]+@(?:[a-zA-Z\d]+\.)+(?:com|tn)$/, 'email must be in this form exp@exp.com ou exp@exp.tn'), // accepte . ou milieu
 
 
-      
+
 
 
 
 
   location: yup.string()
-       .required()
-       .matches(/^[A-Z][a-zA-Z]*$/, 'location must begin with an uppercase letter and must contain only letters.')
-       .max(20, "location cannot exceed 20 characters")
-       .min(3,"location must exceed 3 characters"),
+    .required()
+    .matches(/^[A-Z][a-zA-Z]*$/, 'location must begin with an uppercase letter and must contain only letters.')
+    .max(20, "location cannot exceed 20 characters")
+    .min(3, "location must exceed 3 characters"),
 
 
 
   phone: yup.string()
-       .required()
-       .matches(/^[0-9]{8}$/, 'phone field must contain 8 digits without spaces or special characters.'),
-     
+    .required()
+    .matches(/^[0-9]{8}$/, 'phone field must contain 8 digits without spaces or special characters.'),
+
 
 
   image: yup.mixed()
-  .required()
-  .test('fileFormat', 'The file must be in JPEG, PNG or JPG format', (value) =>
-    value && ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type)
-  )
+    .required()
+    .test('fileFormat', 'The file must be in JPEG, PNG or JPG format', (value) =>
+      value && ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type)
+    )
 
-  });
+});
 
 
- 
- 
+
+
 
 
 
@@ -90,7 +90,7 @@ function Profile() {
     location: '',
     phone: '',
     image: null,
-    password:''
+    password: ''
 
   });
 
@@ -266,14 +266,14 @@ function Profile() {
               <ul className="navbar-nav align-items-center d-none d-md-flex">
                 <li className="nav-item dropdown">
                   <a className="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <div className="media align-items-center">
+                    {/* <div className="media align-items-center">
                       <span className="avatar avatar-sm rounded-circle">
                         <img alt="Image placeholder" src="https://demos.creative-tim.com/argon-dashboard/assets-old/img/theme/team-4.jpg" />
                       </span>
                       <div className="media-body ml-2 d-none d-lg-block">
                         <span className="mb-0 text-sm  font-weight-bold">Jessica Jones</span>
                       </div>
-                    </div>
+                    </div> */}
                   </a>
                   <div className="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
                     <div className=" dropdown-header noti-title">
@@ -329,7 +329,14 @@ function Profile() {
                     <div className="col-lg-3 order-lg-2">
                       <div className="card-profile-image">
                         <a>
-                          <img src={imageSrc} alt={user.name} className="rounded-circle" />
+                        
+                          {imageSrc !== '' ? <img src={imageSrc} alt={user.name} className="rounded-circle" /> :
+                          
+                            <img  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSOGcje-B89rfsytrpDJELPk1OPGA0tXLElNx837LS&s" className="rounded-circle" />}
+ 
+
+
+
                         </a>
                       </div>
                     </div>
