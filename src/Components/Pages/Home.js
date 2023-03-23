@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import 'owl.carousel';
 function Home() {
+  // useEffect(() => {
+  //     console.log(JSON.parse(localStorage.getItem("user"))["_id"]);
+  //   },[])
     return ( <div>
       
         <div className="hero2">
