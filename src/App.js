@@ -23,7 +23,7 @@ const ResetPwd = React.lazy(()=> import ('./Components/User/resetPwd'))
 const Profile = React.lazy(()=> import ('./Components/User/Profile'))
 const AddPet = React.lazy(()=> import ('./Components/Pet/AddPet'))
 const LostAndfound = React.lazy(()=> import ('./Components/Pet/LostAndFound'))
-
+const AddLostAndfound = React.lazy(()=> import ('./Components/Pet/AddLostOrFound'))
 function App() {
 useScript("./assets/js/email-decode.min.js");
 
@@ -78,8 +78,8 @@ useScript("./assets/js/masonry.pkgd.min.js");
           <Route path='/resetPwd/:t' element={<ResetPwd />}></Route>
           <Route path='/addpet' element={<AddPet />}></Route> 
           <Route exact path='/resetpassword/:token' element={<ResetPwd />}></Route>
-          <Route exact path='/lostandfound' element={< LostAndfound/>}></Route>
-
+          <Route exact path='/addlost' element={< AddLostAndfound/>}></Route>
+          <Route exact path='/listlost' element={< LostAndfound/>}></Route>
         </Routes>
 
         <Footer />

@@ -4,6 +4,8 @@ import {useDispatch} from "react-redux";
 import {createBrowserHistory} from 'history';
 import {addPetc} from "./SlicePet";
 import axios from "axios";
+
+ 
 function AddPet() {
     // useEffect(() => {
     //     console.log(JSON.parse(localStorage.getItem("user"))["_id"]);
@@ -45,8 +47,8 @@ function AddPet() {
 
     const userFromLocalStorageString = localStorage.getItem('user');
     const user = userFromLocalStorageString ? JSON.parse(userFromLocalStorageString) : null;
-
-
+ 
+    
     const handleSubmit = async (event) => {
 
         console.log(user)
@@ -60,19 +62,18 @@ function AddPet() {
         for (let i = 0; i < images.length; i++) {
             formData.append("images", images[i]);
         }
-
-
         const url = 'http://127.0.0.1:3000/pet/addpetwithUser'
         axios.post(url, formData).then(data => {
-            console.log(data);
+           
+           
+            history.push('/profile');
+            window.location.reload();
         }).catch(error => {
             console.error(error);
         });
     };
     return (
         <div>
-
-
             <div className="services-details-area pt-120 mb-120">
                 <div className="container">
                     <div className="row g-lg-4 gy-5 mb-120">
