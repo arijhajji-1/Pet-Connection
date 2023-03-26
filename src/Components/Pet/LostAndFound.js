@@ -2,8 +2,23 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createBrowserHistory } from 'history';
+import axios from 'axios';
+
+
+
 
 function AddPet() {
+    const [lostPets, setLostPets] = useState([]);
+    useEffect(() => {
+        axios.get('http://127.0.0.1:3000/pet/getAllLostAndFound')
+          .then(response => {
+            setLostPets(response.data);
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }, []);
+    
     return (<div>
 
         <div className="inner-page-banner">
@@ -40,134 +55,24 @@ function AddPet() {
                 <div className="row g-lg-4 gy-5 justify-content-center">
                     <div className="col-lg-8">
                         <div className="row g-lg-4 gy-5 justify-content-center mb-70">
+                        {lostPets.map(pet => (
                             <div className="col-lg-6 col-md-6 col-sm-10">
                                 <div className="h1-blog-card">
                                     <div className="blog-img">
                                         <img className="img-fluid" src="assets/images/blog/blog-grid-01.png" alt="" />
                                         <div className="category">
-                                            <a href="blog-grid.html">Dog bording</a>
+                                            <a href="blog-grid.html"> {pet.type}</a>
                                         </div>
                                     </div>
                                     <div className="blog-content">
                                         <div className="blog-meta">
-                                            <a href="blog-grid.html">August 13, 2022</a>
+                                            <a href="blog-grid.html">{pet.location}</a>
                                         </div>
-                                        <h4><a href="blog-details.html">lobortis pharetra In necat boi risuse osae that one far This fox.</a></h4>
+                                        <h4><a href="blog-details.html">  {pet.description}</a></h4>
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-lg-6 col-md-6 col-sm-10">
-                                <div className="h1-blog-card">
-                                    <div className="blog-img">
-                                        <img className="img-fluid" src="assets/images/blog/blog-grid-02.png" alt="" />
-                                        <div className="category">
-                                            <a href="blog-grid.html">Day Care</a>
-                                        </div>
-                                    </div>
-                                    <div className="blog-content">
-                                        <div className="blog-meta">
-                                            <a href="blog-grid.html">August 10, 2022</a>
-                                        </div>
-                                        <h4><a href="blog-details.html">Donec venenatis ex id nibh iaculisoni Clonal interdum Curabitur.</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-6 col-md-6 col-sm-10">
-                                <div className="h1-blog-card">
-                                    <div className="blog-img">
-                                        <img className="img-fluid" src="assets/images/blog/blog-grid-03.png" alt="" />
-                                        <div className="category">
-                                            <a href="blog-grid.html">Grooming</a>
-                                        </div>
-                                    </div>
-                                    <div className="blog-content">
-                                        <div className="blog-meta">
-                                            <a href="blog-grid.html">August 05, 2022</a>
-                                        </div>
-                                        <h4><a href="blog-details.html">Orci varius natoque penatibus etmal dis parturient montes.</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-6 col-md-6 col-sm-10">
-                                <div className="h1-blog-card">
-                                    <div className="blog-img">
-                                        <img className="img-fluid" src="assets/images/blog/blog-grid-04.png" alt="" />
-                                        <div className="category">
-                                            <a href="blog-grid.html">Pet Checkup</a>
-                                        </div>
-                                    </div>
-                                    <div className="blog-content">
-                                        <div className="blog-meta">
-                                            <a href="blog-grid.html">June 25, 2022</a>
-                                        </div>
-                                        <h4><a href="blog-details.html">gravida ut malesuada in tristique sed eros Nunc sed efficitur.</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-6 col-md-6 col-sm-10">
-                                <div className="h1-blog-card">
-                                    <div className="blog-img">
-                                        <img className="img-fluid" src="assets/images/blog/blog-grid-05.png" alt="" />
-                                        <div className="category">
-                                            <a href="blog-grid.html">Medical Care</a>
-                                        </div>
-                                    </div>
-                                    <div className="blog-content">
-                                        <div className="blog-meta">
-                                            <a href="blog-grid.html">June 15, 2022</a>
-                                        </div>
-                                        <h4><a href="blog-details.html">luctus justo quis feugiat lacus orcha ornare augue Integer.</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-6 col-md-6 col-sm-10">
-                                <div className="h1-blog-card">
-                                    <div className="blog-img">
-                                        <img className="img-fluid" src="assets/images/blog/blog-grid-06.png" alt="" />
-                                        <div className="category">
-                                            <a href="blog-grid.html">Pet Grong</a>
-                                        </div>
-                                    </div>
-                                    <div className="blog-content">
-                                        <div className="blog-meta">
-                                            <a href="blog-grid.html">June 02, 2022</a>
-                                        </div>
-                                        <h4><a href="blog-details.html">malesuada nibh Nulla lacinia miegetol bibendum euismod.</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-6 col-md-6 col-sm-10">
-                                <div className="h1-blog-card">
-                                    <div className="blog-img">
-                                        <img className="img-fluid" src="assets/images/blog/blog-grid-07.png" alt="" />
-                                        <div className="category">
-                                            <a href="blog-grid.html">Grooming</a>
-                                        </div>
-                                    </div>
-                                    <div className="blog-content">
-                                        <div className="blog-meta">
-                                            <a href="blog-grid.html">May 30, 2022</a>
-                                        </div>
-                                        <h4><a href="blog-details.html">vitae tortor Maecenas in dui eget orci dapibus imperdiet.</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-6 col-md-6 col-sm-10">
-                                <div className="h1-blog-card">
-                                    <div className="blog-img">
-                                        <img className="img-fluid" src="assets/images/blog/blog-grid-08.png" alt="" />
-                                        <div className="category">
-                                            <a href="blog-grid.html">Day Care</a>
-                                        </div>
-                                    </div>
-                                    <div className="blog-content">
-                                        <div className="blog-meta">
-                                            <a href="blog-grid.html">May 21, 2022</a>
-                                        </div>
-                                        <h4><a href="blog-details.html">semper Praesent sit amet nisi quison massa euismod facilisis.</a></h4>
-                                    </div>
-                                </div>
-                            </div>
+                             ))}
                         </div>
                         <div className="row">
                             <div className="col-lg-12 d-flex justify-content-center">

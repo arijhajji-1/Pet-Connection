@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createBrowserHistory } from 'history';
-import { addPetc } from "./SlicePet";
+ 
 import axios from "axios";
 function Addlostorfound() {
     const history = createBrowserHistory();
@@ -16,7 +16,19 @@ function Addlostorfound() {
     const [description, setDescription] = useState("");
     const userFromLocalStorageString = localStorage.getItem('user');
     const user = userFromLocalStorageString ? JSON.parse(userFromLocalStorageString) : null;
-
+    const [lostPets, setLostPets] = useState([]);
+    //get lost and found pets by user
+    useEffect(() => {
+     
+        console.log(user);
+        axios.post('http://127.0.0.1:3000/pet/getAllLostAndFounduser', { user })
+          .then(response => {
+            setLostPets(response.data);
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }, []);
     const handleImageChange = (event) => {
 
         setImage([
@@ -97,7 +109,7 @@ function Addlostorfound() {
                     <div className="row g-4">
                         <div className="col-lg-7">
                             <div className="form-wrap box--shadow mb-30">
-                                <h4 className="title-25 mb-20">Billing Details</h4>
+                                <h4 className="title-25 mb-20">Add lost or found pet </h4>
                                 <form onSubmit={handleSubmit}>
                                     <div className="row">
                                         <div className="col-12">
@@ -201,15 +213,16 @@ function Addlostorfound() {
                         <aside className="col-lg-5">
                             <div className="added-product-summary mb-30">
                                 <h5 className="title-25 checkout-title">
-                                    Order Summary
+                                Your Posts
                                 </h5>
                                 <ul className="added-products">
+                                {lostPets.map(pet => (    
                                     <li className="single-product d-flex justify-content-start">
                                         <div className="product-img">
                                             <img src="assets/images/bg/check-out-01.png" alt="" />
                                         </div>
                                         <div className="product-info">
-                                            <h5 className="product-title"><a href="#">Whiskas Cat Food Core Tuna</a></h5>
+                                            <h5 className="product-title"><a href="#">{pet.location}</a></h5>
                                             <div className="product-total d-flex align-items-center">
                                                 <div className="quantity">
                                                     <div className="quantity d-flex align-items-center">
@@ -219,7 +232,7 @@ function Addlostorfound() {
                                                     </div>
                                                 </div>
                                                 <strong> <i className="bi bi-x-lg px-2"></i>
-                                                    <span className="product-price">$25.00</span>
+                                                    <span className="product-price">{pet.color}</span>
                                                 </strong>
                                             </div>
                                         </div>
@@ -227,50 +240,7 @@ function Addlostorfound() {
                                             <i className="bi bi-x-lg"></i>
                                         </div>
                                     </li>
-                                    <li className="single-product d-flex justify-content-start">
-                                        <div className="product-img">
-                                            <img src="assets/images/bg/check-out-02.png" alt="" />
-                                        </div>
-                                        <div className="product-info">
-                                            <h5 className="product-title"><a href="#">Friskies Kitten Discoveries.</a></h5>
-                                            <div className="product-total d-flex align-items-center">
-                                                <div className="quantity">
-                                                    <div className="quantity d-flex align-items-center">
-                                                        <div className="quantity-nav nice-number d-flex align-items-center">
-                                                            <input type="number" min="1" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <strong> <i className="bi bi-x-lg px-2"></i>
-                                                    <span className="product-price">$39.00</span>
-                                                </strong>
-                                            </div>
-                                        </div>
-                                        <div className="delete-btn">
-                                            <i className="bi bi-x-lg"></i>
-                                        </div>
-                                    </li>
-                                    <li className="single-product d-flex justify-content-start">
-                                        <div className="product-img">
-                                            <img src="assets/images/bg/check-out-03.png" alt="" />
-                                        </div>
-                                        <div className="product-info">
-                                            <h5 className="product-title"><a href="#">Natural Dog Fresh Food.</a></h5>
-                                            <div className="product-total d-flex align-items-center">
-                                                <div className="quantity d-flex align-items-center">
-                                                    <div className="quantity-nav nice-number d-flex align-items-center">
-                                                        <input type="number" min="1" />
-                                                    </div>
-                                                </div>
-                                                <strong> <i className="bi bi-x-lg px-2"></i>
-                                                    <span className="product-price">$18.00</span>
-                                                </strong>
-                                            </div>
-                                        </div>
-                                        <div className="delete-btn">
-                                            <i className="bi bi-x-lg"></i>
-                                        </div>
-                                    </li>
+                                   ))} 
                                 </ul>
                             </div>
 
