@@ -3,11 +3,12 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createBrowserHistory } from 'history';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 
 
 
 function AddPet() {
+    const [selectedLostPetId, setSelectedLostPetId] = useState(null);
     const [lostPets, setLostPets] = useState([]);
     useEffect(() => {
         axios.get('http://127.0.0.1:3000/pet/getAllLostAndFound')
@@ -59,7 +60,8 @@ function AddPet() {
                             <div className="col-lg-6 col-md-6 col-sm-10">
                                 <div className="h1-blog-card">
                                     <div className="blog-img">
-                                        <img className="img-fluid" src="assets/images/blog/blog-grid-01.png" alt="" />
+                                        <img className="img-fluid" src={`http://127.0.0.1:3000/pet/image/${pet.image}`} alt="" />
+                                        
                                         <div className="category">
                                             <a href="blog-grid.html"> {pet.type}</a>
                                         </div>
@@ -69,6 +71,9 @@ function AddPet() {
                                             <a href="blog-grid.html">{pet.location}</a>
                                         </div>
                                         <h4><a href="blog-details.html">  {pet.description}</a></h4>
+                                        <Link to={`/lostdetail/${pet._id}`} >
+                                                {pet.description}
+                                            </Link>
                                     </div>
                                 </div>
                             </div>

@@ -17,6 +17,7 @@ function Addlostorfound() {
     const userFromLocalStorageString = localStorage.getItem('user');
     const user = userFromLocalStorageString ? JSON.parse(userFromLocalStorageString) : null;
     const [lostPets, setLostPets] = useState([]);
+  
     //get lost and found pets by user
     useEffect(() => {
      
@@ -24,11 +25,15 @@ function Addlostorfound() {
         axios.post('http://127.0.0.1:3000/pet/getAllLostAndFounduser', { user })
           .then(response => {
             setLostPets(response.data);
+            console.log(lostPets);
+            
           })
           .catch(error => {
             console.error(error);
           });
       }, []);
+      const imageName = lostPets.image;
+   
     const handleImageChange = (event) => {
 
         setImage([
@@ -103,6 +108,7 @@ function Addlostorfound() {
                 </div>
             </div>
 
+            <img src="http://127.0.0.1:3000/pet/image/welcome" alt="Welcome Image" />
 
             <div className="checkout-section pt-120 pb-120">
                 <div className="container">
@@ -219,7 +225,7 @@ function Addlostorfound() {
                                 {lostPets.map(pet => (    
                                     <li className="single-product d-flex justify-content-start">
                                         <div className="product-img">
-                                            <img src="assets/images/bg/check-out-01.png" alt="" />
+                                            <img src={`http://127.0.0.1:3000/pet/image/${pet.image}`} alt="" />
                                         </div>
                                         <div className="product-info">
                                             <h5 className="product-title"><a href="#">{pet.location}</a></h5>

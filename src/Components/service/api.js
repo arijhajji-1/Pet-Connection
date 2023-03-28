@@ -2,12 +2,12 @@ import axios from "axios";
 
 const url = "http://127.0.0.1:3000/pet/AllpetsByUser/";
  const url2 = "http://127.0.0.1:3000/pet/addpetwithUser";
- const url3 = "http://127.0.0.1:3000/pet/getAllLostAndFound";
+ const comments1 = "http://127.0.0.1:3000/pet/comments";
 // // const url4 = "http://localhost:3000/user/ban";
 // // const url5 = "http://localhost:3000/user/update";
-export const getUsers = async () => {
+export const getallComments = async () => {
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(comments1);
     return response.data;
   } catch (error) {
     console.error(error);

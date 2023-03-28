@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {createBrowserHistory} from 'history';
-import {addPetc} from "./SlicePet";
+ 
 import axios from "axios";
 
  
