@@ -65,7 +65,7 @@ useScript("./assets/js/masonry.pkgd.min.js");
     <div className="App">
       <Suspense fallback={<div>Loading...</div>}>
         
-        <Header />
+        {/* <Header /> */}
         <Routes>
           <Route path="*" element={<Home />}></Route>
           <Route path="/shop" element={<Market />}></Route>
@@ -90,7 +90,7 @@ useScript("./assets/js/masonry.pkgd.min.js");
           <Route exact path='/chat' element={< Chatbot/>}></Route>
         </Routes>
 
-        <Footer />
+        {/* <Footer /> */}
       </Suspense>
       
     </div>

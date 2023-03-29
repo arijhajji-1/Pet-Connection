@@ -1,85 +1,111 @@
-import $ from "jquery";
-var element = $('.floating-chat');
-var myStorage = localStorage;
-
-if (!myStorage.getItem('chatID')) {
-    myStorage.setItem('chatID', createUUID());
+// MESSAGE INPUT
+const textarea = document.querySelector('.chatbox-message-input')
+const chatboxForm = document.querySelector('.chatbox-message-form')
+window.onload=function(){
+    if(textarea){
+    textarea.addEventListener('input', function () {
+        let line = textarea.value.split('\n').length
+    
+        if(textarea.rows < 6 || line < 6) {
+            textarea.rows = line
+        }
+    
+        if(textarea.rows > 1) {
+            chatboxForm.style.alignItems = 'flex-end'
+        } else {
+            chatboxForm.style.alignItems = 'center'
+        }
+    }) 
+}   
 }
 
-setTimeout(function() {
-    element.addClass('enter');
-}, 1000);
+// TOGGLE CHATBOX
+const chatboxToggle = document.querySelector('.chatbox-toggle')
+const chatboxMessage = document.querySelector('.chatbox-message-wrapper')
 
-element.click(openElement);
-
-function openElement() {
-    var messages = element.find('.messages');
-    var textInput = element.find('.text-box');
-    element.find('>i').hide();
-    element.addClass('expand');
-    element.find('.chat').addClass('enter');
-    var strLength = textInput.val().length * 2;
-    textInput.keydown(onMetaAndEnter).prop("disabled", false).focus();
-    element.off('click', openElement);
-    element.find('.header button').click(closeElement);
-    element.find('#sendMessage').click(sendNewMessage);
-    messages.scrollTop(messages.prop("scrollHeight"));
+if(chatboxToggle){
+    chatboxToggle.addEventListener('click', function () {
+        chatboxMessage.classList.toggle('show')
+    })    
 }
 
-function closeElement() {
-    element.find('.chat').removeClass('enter').hide();
-    element.find('>i').show();
-    element.removeClass('expand');
-    element.find('.header button').off('click', closeElement);
-    element.find('#sendMessage').off('click', sendNewMessage);
-    element.find('.text-box').off('keydown', onMetaAndEnter).prop("disabled", true).blur();
-    setTimeout(function() {
-        element.find('.chat').removeClass('enter').show()
-        element.click(openElement);
-    }, 500);
+
+
+
+// DROPDOWN TOGGLE
+const dropdownToggle = document.querySelector('.chatbox-message-dropdown-toggle')
+const dropdownMenu = document.querySelector('.chatbox-message-dropdown-menu')
+if(dropdownToggle){
+dropdownToggle.addEventListener('click', function () {
+	dropdownMenu.classList.toggle('show')
+})
+}
+// document.addEventListener('click', function (e) {
+// 	if(!e.target.matches('.chatbox-message-dropdown, .chatbox-message-dropdown *')) {
+// 		dropdownMenu.classList.remove('show')
+// 	}
+// })
+// }
+
+// CHATBOX MESSAGE
+const chatboxMessageWrapper = document.querySelector('.chatbox-message-content')
+const chatboxNoMessage = document.querySelector('.chatbox-message-no-message')
+if (chatboxForm) {
+    
+    chatboxForm.addEventListener('submit', function (e) {
+        e.preventDefault()
+    
+        if(isValid(textarea.value)) {
+            writeMessage()
+            setTimeout(autoReply, 1000)
+        }
+    })
+}
+function addZero(num) {
+	return num < 10 ? '0'+num : num
 }
 
-function createUUID() {
-    // http://www.ietf.org/rfc/rfc4122.txt
-    var s = [];
-    var hexDigits = "0123456789abcdef";
-    for (var i = 0; i < 36; i++) {
-        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-    }
-    s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
-    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
-    s[8] = s[13] = s[18] = s[23] = "-";
-
-    var uuid = s.join("");
-    return uuid;
+function writeMessage() {
+	const today = new Date()
+	let message = `
+		<div class="chatbox-message-item sent">
+			<span class="chatbox-message-item-text">
+				${textarea.value.trim().replace(/\n/g, '<br>\n')}
+			</span>
+			<span class="chatbox-message-item-time">${addZero(today.getHours())}:${addZero(today.getMinutes())}</span>
+		</div>
+	`
+	chatboxMessageWrapper.insertAdjacentHTML('beforeend', message)
+	chatboxForm.style.alignItems = 'center'
+	textarea.rows = 1
+	textarea.focus()
+	textarea.value = ''
+	chatboxNoMessage.style.display = 'none'
+	scrollBottom()
 }
 
-function sendNewMessage() {
-    var userInput = $('.text-box');
-    var newMessage = userInput.html().replace(/\<div\>|\<br.*?\>/ig, '\n').replace(/\<\/div\>/g, '').trim().replace(/\n/g, '<br>');
-
-    if (!newMessage) return;
-
-    var messagesContainer = $('.messages');
-
-    messagesContainer.append([
-        '<li class="self">',
-        newMessage,
-        '</li>'
-    ].join(''));
-
-    // clean out old message
-    userInput.html('');
-    // focus on input
-    userInput.focus();
-
-    messagesContainer.finish().animate({
-        scrollTop: messagesContainer.prop("scrollHeight")
-    }, 250);
+function autoReply() {
+	const today = new Date()
+	let message = `
+		<div class="chatbox-message-item received">
+			<span class="chatbox-message-item-text">
+				Thank you for your awesome support!
+			</span>
+			<span class="chatbox-message-item-time">${addZero(today.getHours())}:${addZero(today.getMinutes())}</span>
+		</div>
+	`
+	chatboxMessageWrapper.insertAdjacentHTML('beforeend', message)
+	scrollBottom()
 }
 
-function onMetaAndEnter(event) {
-    if ((event.metaKey || event.ctrlKey) && event.keyCode == 13) {
-        sendNewMessage();
-    }
+
+function scrollBottom() {
+	chatboxMessageWrapper.scrollTo(0, chatboxMessageWrapper.scrollHeight)
+}
+
+function isValid(value) {
+	let text = value.replace(/\n/g, '')
+	text = text.replace(/\s/g, '')
+
+	return text.length > 0
 }
