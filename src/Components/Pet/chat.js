@@ -1,3 +1,6 @@
+import { botResponse } from "./Chatbot"
+
+
 // MESSAGE INPUT
 const textarea = document.querySelector('.chatbox-message-input')
 const chatboxForm = document.querySelector('.chatbox-message-form')
@@ -36,9 +39,11 @@ if(chatboxToggle){
 const dropdownToggle = document.querySelector('.chatbox-message-dropdown-toggle')
 const dropdownMenu = document.querySelector('.chatbox-message-dropdown-menu')
 if(dropdownToggle){
-dropdownToggle.addEventListener('click', function () {
-	dropdownMenu.classList.toggle('show')
-})
+	dropdownToggle.addEventListener('click', function () {
+		dropdownMenu.classList.toggle('show')
+		console.log("show");
+		
+	})
 }
 // document.addEventListener('click', function (e) {
 // 	if(!e.target.matches('.chatbox-message-dropdown, .chatbox-message-dropdown *')) {
@@ -57,7 +62,7 @@ if (chatboxForm) {
     
         if(isValid(textarea.value)) {
             writeMessage()
-            setTimeout(autoReply, 1000)
+            setTimeout(botResponse, 1000)
         }
     })
 }

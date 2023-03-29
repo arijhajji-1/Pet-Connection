@@ -3,17 +3,16 @@ import "./chat.css"
 import "./chat.js"
 import React, { useState } from "react";
 import axios from 'axios';
-function ChatBot() {
+export function botResponse(){
+	console.log("ASSOUM");
+}
+export  function  ChatBot() {
  const[prompt,setPrompt]=useState("");
  const[response,setResponse]=useState("");
  const handleSubmit=(e)=>{
-    e.preventDefault();
-    axios.post("http://127.0.0.1:3000/chat",{prompt})
-    .then((res)=>{
-        setResponse(res.data);
-    }).catch((err)=>{
-        console.log(err);
-    });
+
+		console.log("CHOSEe")
+
 }
 
     return (  
