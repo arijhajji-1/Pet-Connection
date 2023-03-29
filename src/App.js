@@ -28,6 +28,7 @@ const LostDetails = React.lazy(()=> import ('./Components/Pet/lostDetail'))
 
 const Comments = React.lazy(()=> import ('./Components/Pet/comments/Comments'))
 
+const Chatbot = React.lazy(()=> import ('./Components/Pet/Chatbot'))
 function App() {
 useScript("./assets/js/email-decode.min.js");
 
@@ -86,7 +87,7 @@ useScript("./assets/js/masonry.pkgd.min.js");
           <Route exact path='/listlost' element={< LostAndfound/>}></Route>
           <Route exact path='/lostdetail/:id' element={< LostDetails/>}></Route>
           <Route exact path='/lostdetail1/:id' element={< Comments/>}></Route>
-        
+          <Route exact path='/chat' element={< Chatbot/>}></Route>
         </Routes>
 
         <Footer />
