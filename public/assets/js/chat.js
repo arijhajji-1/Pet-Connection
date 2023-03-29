@@ -1,6 +1,12 @@
 // MESSAGE INPUT
-const textarea = document.querySelector('.chatbox-message-input')
-const chatboxForm = document.querySelector('.chatbox-message-form')
+const textarea = document.querySelector('.chatbox-message-input');
+const chatboxForm = document.querySelector('.chatbox-message-form');
+
+// var prompt=document.getElementById("prompt").value;
+var reponse ="";
+//const[response,setResponse]=useState("");
+
+
 window.onload=function(){
     if(textarea){
     textarea.addEventListener('input', function () {
@@ -37,8 +43,10 @@ const dropdownToggle = document.querySelector('.chatbox-message-dropdown-toggle'
 const dropdownMenu = document.querySelector('.chatbox-message-dropdown-menu')
 if(dropdownToggle){
 	dropdownToggle.addEventListener('click', function () {
-		dropdownMenu.classList.toggle('show')
-	})
+		
+		
+			
+})
 }
 
 // document.addEventListener('click', function (e) {
@@ -46,19 +54,19 @@ if(dropdownToggle){
 // 		dropdownMenu.classList.remove('show')
 // 	}
 // })
-
-
+// }
 
 // CHATBOX MESSAGE
 const chatboxMessageWrapper = document.querySelector('.chatbox-message-content')
 const chatboxNoMessage = document.querySelector('.chatbox-message-no-message')
 if (chatboxForm) {
+    
     chatboxForm.addEventListener('submit', function (e) {
         e.preventDefault()
     
         if(isValid(textarea.value)) {
-            writeMessage()
-            setTimeout(autoReply, 1000)
+            writeMessage();
+            autoReply();
         }
     })
 }
@@ -87,10 +95,11 @@ function writeMessage() {
 
 function autoReply() {
 	const today = new Date()
+	
 	let message = `
 		<div class="chatbox-message-item received">
 			<span class="chatbox-message-item-text">
-				Thank you for your awesome support!
+				<i>! ... Please wait for response ... !</i>
 			</span>
 			<span class="chatbox-message-item-time">${addZero(today.getHours())}:${addZero(today.getMinutes())}</span>
 		</div>
@@ -98,6 +107,7 @@ function autoReply() {
 	chatboxMessageWrapper.insertAdjacentHTML('beforeend', message)
 	scrollBottom()
 }
+
 
 function scrollBottom() {
 	chatboxMessageWrapper.scrollTo(0, chatboxMessageWrapper.scrollHeight)
@@ -107,5 +117,5 @@ function isValid(value) {
 	let text = value.replace(/\n/g, '')
 	text = text.replace(/\s/g, '')
 
-	return text.length > 0
+	return text.length > 0;
 }

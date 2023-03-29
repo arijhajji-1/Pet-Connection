@@ -81,7 +81,7 @@ select {
 
 /* GLOBAL STYLES */
 :root {
-	--blue: #335DFF;
+	--blue: #fd6c5b;
 	--grey: #F5F5F5;
 	--grey-d-1: #EEE;
 	--grey-d-2: #DDD;
@@ -104,6 +104,8 @@ select {
 	right: 2rem;
 	width: 4rem;
 	height: 4rem;
+	/* added Zindex to display over everyting */
+    z-index: 999;
 }
 .chatbox-toggle {
 	width: 100%;
