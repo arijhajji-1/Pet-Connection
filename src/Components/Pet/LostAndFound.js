@@ -69,10 +69,10 @@ function AddPet() {
                                     </div>
                                     <div className="blog-content">
                                         <div className="blog-meta">
-                                            <a href="blog-grid.html">{pet.location}</a>
+                                            <a href="blog-grid.html">{pet.breed}</a>
                                         </div>
                                         <h4><a href="blog-details.html">  {pet.description}</a></h4>
-                                        <Link to={`/lostdetail/${pet._id}`} >
+                                        <Link to={`/lostdetail1/${pet._id}`} >
                                                 {pet.description}
                                             </Link>
                                     </div>

@@ -23,7 +23,7 @@ function LostDetails() {
       }
     };
     fetchLostPetById();
-  }, [id]);
+  }, [id])
   useEffect(() => {
     const fetchComment = async () => {
       try {

@@ -5,12 +5,11 @@ import { useDispatch } from "react-redux";
 import { createBrowserHistory } from 'history';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
- 
+import { useParams } from "react-router-dom";
 import axios from "axios";
-function Addlostorfound() {
+function UpdateLost() {
     const history = createBrowserHistory();
-    const dispatch = useDispatch();
-
+  
     const [color, setColor] = useState("");
     const [type, setType] = useState("");
     const [location, setLocation] = useState("");
@@ -19,21 +18,8 @@ function Addlostorfound() {
     const userFromLocalStorageString = localStorage.getItem('user');
     const user = userFromLocalStorageString ? JSON.parse(userFromLocalStorageString) : null;
     const [lostPets, setLostPets] = useState([]);
-  // Event handler for delete button
-const handleDelete = async (id) => {
-    try {
-      // Send DELETE request to the API endpoint
-      await axios.delete(`http://127.0.0.1:3000/pet/deletelostbuid/${id}`);
    
-      setLostPets(lostPets.filter(pet => pet._id !== id));
-  
-      // Show a success message using a toast library or any other UI component
-      toast.success('Lost pet deleted successfully');
-    } catch (error) {
-      // Handle error and show an error message
-      toast.error('Failed to delete lost pet');
-    }
-  }
+  const { id } = useParams();
     //get lost and found pets by user
     useEffect(() => {
      
@@ -42,7 +28,14 @@ const handleDelete = async (id) => {
           .then(response => {
             setLostPets(response.data);
             console.log(lostPets);
-            
+            // Set form fields with data of the lost post to update
+                const lostPost = response.data.find(pet => pet._id === String(id));
+                if (lostPost) {
+                setColor(lostPost.color);
+                setType(lostPost.type);
+                setLocation(lostPost.location);
+                setDescription(lostPost.description);
+                }
           })
           .catch(error => {
             console.error(error);
@@ -66,53 +59,46 @@ const handleDelete = async (id) => {
         console.log(e.target.value);
         setLocation(e.target.value);
     };
-    const handleSubmit = async (event) => {
+   
+// Event handler for form submission
+const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        console.log(user)
-        event.preventDefault();
+    try {
+      // Send PUT request to the API endpoint
+      await axios.put(`http://127.0.0.1:3000/pet/updatelost/${id}`, {
+        color,
+        type,
+        location,
+        description
+      });
 
-        const formData = new FormData();
-        formData.append("description", description);
-        formData.append("location", location);
-        formData.append("color", color);
-        formData.append("type", type);
-        formData.append("user", JSON.stringify(user));
-        for (let i = 0; i < image.length; i++) {
-            formData.append("image", image[i]);
-        }
-
-        const url = 'http://127.0.0.1:3000/pet/addlost'
-        axios.post(url, formData).then(data => {
-
-            // notification 
-            // if (user.location === location) {
-            //     toast.info(`A lost pet was reported in your area (${location})! If you see anything, please contact the owner.`);
-            //   }
-            toast.success('Lost pet added successfully');
-            history.push('/listlost');
-            window.location.reload();
-        }).catch(error => {
-            console.error(error);
-        });
-    };
-
+      // Show success message or perform other UI updates
+      toast.success('post updated successfully');
+      history.push('/listlost');
+      window.location.reload();
+    } catch (error) {
+      // Handle error and show error message
+      toast.success('failed to update post');
+    }
+  }
 
     return (
         <div>
 
             <div className="inner-page-banner">
                 <div className="breadcrumb-vec-btm">
-                    <img className="img-fluid" src="assets/images/bg/inner-banner-btm-vec.png" alt="" />
+                    <img className="img-fluid" src="/assets/images/bg/inner-banner-btm-vec.png" alt="" />
                 </div>
                 <div className="container">
                     <div className="row justify-content-center align-items-center text-center">
                         <div className="col-lg-6 align-items-center">
                             <div className="banner-content">
-                                <h1>Add lost or found pet</h1>
+                                <h1>update post</h1>
                                 <nav aria-label="breadcrumb">
                                     <ol className="breadcrumb">
                                         <li className="breadcrumb-item"><a href="index.html">Home</a></li>
-                                        <li className="breadcrumb-item active" aria-current="page">Add lost or found pet </li>
+                                        <li className="breadcrumb-item active" aria-current="page">update post </li>
                                     </ol>
                                 </nav>
                             </div>
@@ -120,23 +106,21 @@ const handleDelete = async (id) => {
                         <div className="col-lg-6">
                             <div className="banner-img d-lg-block d-none">
                                 <div className="banner-img-bg">
-                                    <img className="img-fluid" src="assets/images/bg/inner-banner-vec.png" alt="" />
+                                    <img className="img-fluid" src="/assets/images/bg/inner-banner-vec.png" alt="" />
                                 </div>
-                                <img className="img-fluid" src="assets/images/bg/inner-banner-img.png" alt="" />
+                                <img className="img-fluid" src="/assets/images/bg/inner-banner-img.png" alt="" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-          
-
             <div className="checkout-section pt-120 pb-120">
                 <div className="container">
                     <div className="row g-4">
                         <div className="col-lg-7">
                             <div className="form-wrap box--shadow mb-30">
-                                <h4 className="title-25 mb-20">Add lost or found pet </h4>
+                                <h4 className="title-25 mb-20">update post</h4>
                                 <form onSubmit={handleSubmit}>
                                     <div className="row">
                                         <div className="col-12">
@@ -237,45 +221,8 @@ const handleDelete = async (id) => {
                             </div>
 
                         </div>
-                        <aside className="col-lg-5">
-                            <div className="added-product-summary mb-30">
-                                <h5 className="title-25 checkout-title">
-                                Your Posts
-                                </h5>
-                                <ul className="added-products">
-                                {lostPets.map(pet => (    
-                                    <li className="single-product d-flex justify-content-start">
-                                        <div className="product-img">
-                                            <img src={`http://127.0.0.1:3000/pet/image/${pet.image}`} alt="" />
-                                        </div>
-                                        <div className="product-info">
-                                            <h5 className="product-title"><a href="#">{pet.type}</a></h5>
-                                            <div className="product-total d-flex align-items-center">
-                                               
-                                                <strong>
-                                                     {/* <i className="bi bi-x-lg px-2"></i> */}
-                                                     <span className="product-price">{pet.description}</span><br/>
-                                                                       
-                                                </strong> 
-                                            </div><a
-                                                                            href={`/updatepet/${pet._id}`}
-                                                                            className="text-secondary font-weight-bold text-xs"
-                                                                            data-toggle="tooltip"
-                                                                            data-original-title="Edit user"
-                                                                            >Edit
-                                                                            </a>
-                                        </div>
-                                        <div className="delete-btn" onClick={() => handleDelete(pet._id)}>
-                                            <i className="bi bi-x-lg"></i>
-                                        </div>
-                                    </li>
-                                   ))} 
-                                </ul>
-                            </div>
+                        <ToastContainer />
 
-                            <ToastContainer />
-
-                        </aside>
                     </div>
                 </div>
             </div>
@@ -284,4 +231,4 @@ const handleDelete = async (id) => {
     );
 }
 
-export default Addlostorfound;
+export default UpdateLost;

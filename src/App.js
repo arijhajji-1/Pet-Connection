@@ -29,6 +29,9 @@ const LostDetails = React.lazy(()=> import ('./Components/Pet/lostDetail'))
 const Comments = React.lazy(()=> import ('./Components/Pet/comments/Comments'))
 
 const Chatbot = React.lazy(()=> import ('./Components/Pet/Chatbot'))
+const Updatelost=React.lazy(()=>import ('./Components/Pet/UpdateLost'))
+const Predict=React.lazy(()=>import ('./Components/Pet/predict'))
+
 function App() {
 useScript("./assets/js/email-decode.min.js");
 
@@ -66,7 +69,7 @@ useScript("./assets/js/masonry.pkgd.min.js");
     <div className="App">
       <Suspense fallback={<div>Loading...</div>}>
         
-        {/* <Header /> */}
+        <Header />
         <Routes>
           <Route path="*" element={<Home />}></Route>
           <Route path="/shop" element={<Market />}></Route>
@@ -81,17 +84,21 @@ useScript("./assets/js/masonry.pkgd.min.js");
          {user &&( <Route path="/2faverify" element={<TwoFa/>}></Route>)}
          {user &&(<Route path='/profile' element={<Profile />}></Route>)}
          <Route path='/ForgetPwd' element={<ForgetPwd />}></Route>
-          <Route path='/resetPwd/:t' element={<ResetPwd />}></Route>
-          <Route path='/addpet' element={<AddPet />}></Route> 
-          <Route exact path='/resetpassword/:token' element={<ResetPwd />}></Route>
-          <Route exact path='/addlost' element={< AddLostAndfound/>}></Route>
-          <Route exact path='/listlost' element={< LostAndfound/>}></Route>
-          <Route exact path='/lostdetail/:id' element={< LostDetails/>}></Route>
-          <Route exact path='/lostdetail1/:id' element={< Comments/>}></Route>
-          <Route exact path='/chat' element={< Chatbot/>}></Route>
+         
+              <Route path='/resetPwd/:t' element={<ResetPwd />}></Route>
+              <Route path='/addpet' element={<AddPet />}></Route> 
+              <Route exact path='/resetpassword/:token' element={<ResetPwd />}></Route>
+              <Route exact path='/addlost' element={< AddLostAndfound/>}></Route>
+              <Route exact path='/listlost' element={< LostAndfound/>}></Route>
+              <Route exact path='/lostdetail/:id' element={< LostDetails/>}></Route>
+              <Route exact path='/lostdetail1/:id' element={< Comments/>}></Route>
+              <Route exact path='/chat' element={< Chatbot/>}></Route>
+              <Route exact path='/updatepet/:id' element={< Updatelost/>}></Route>
+              <Route exact path='/Predict' element={< Predict/>}></Route>
+
         </Routes>
 
-        {/* <Footer /> */}
+        <Footer />
       </Suspense>
       
     </div>

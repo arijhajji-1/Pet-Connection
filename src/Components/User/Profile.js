@@ -75,9 +75,49 @@ function Profile() {
   const navigate = useNavigate();
   const param = useParams();
   const [imageSrc, setImageSrc] = useState(''); // importer image user 
+  const [pets, setPets] = useState([]);
+  const [name, setName] = useState('');
+  const [color, setColor] = useState('');
+  const [type, setType] = useState('');
+  const userFromLocalStorageString = localStorage.getItem('user');
+  const user1 = userFromLocalStorageString ? JSON.parse(userFromLocalStorageString) : null;
+  useEffect(() => {
+     
+    console.log(user1);
+    axios.post('http://127.0.0.1:3000/pet/AllpetsByUser/', { user1 })
+      .then(response => {
+        setPets(response.data);
+        console.log(response.data)
+        setName(response.data.pets.name);
+        setColor(response.data.pets.color);
+        setType(response.data.pets.type);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
+  const handleSubmitupdatepet = async (e,id) => {
+    e.preventDefault();
 
+    try {
+      // Send PUT request to the API endpoint
+      await axios.put(`http://127.0.0.1:3000/pet/updatepet/${id}`, {
+        name,
+        color,
+        type,
+        
+      });
 
+      // Show success message or perform other UI updates
+      toast.success('post updated successfully');
+      // history.push('/listlost');
+      // window.location.reload();
+    } catch (error) {
+      // Handle error and show error message
+      toast.success('failed to update post');
+    }
+  }
   // const [user, setUser] = useState({});
 
   const [user, setUser] = useState({
@@ -93,6 +133,7 @@ function Profile() {
 
   const [formErrors, setFormErrors] = useState({});
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formSubmittedd, setFormSubmittedd] = useState(false);
 
 
   useEffect(() => {
@@ -546,15 +587,116 @@ const handleDisable2FA = async () => {
                     {/*-------------------------------------------------------------------------------------------------------------------  */}
 
                   </div>
+                  <div className="services-details-area pt-120 mb-120">
+                <div className="container">
+                    <div className="row g-lg-4 gy-5 mb-120">
+                        <div className="col-lg-7">
+                            <div className="tab-content tab-content1" id="v-pills-tabContent">
+                              
+                                <img src="/assets/images/add-image4.png" id="chose" className="responsiveImg"/>
+                              
+{/*                                 
+                                {image.map((img, index) => (
+                                  <div className={`tab-pane fade ${index === 0 ? 'active show' : ''}`} id={`v-pills-img${index + 1}`} role="tabpanel" aria-labelledby={`v-pills-img${index + 1}-tab`}>
+                                   <img className="img-fluid bigCardPet" src={img} alt=""/>
+                                  </div>
+                                  ))}  */}
+                            </div>
+                            {/* <div className="nav nav1 nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                {image.map((img, index) => (
+                                  <button className={`nav-link ${index === 0 ? 'active' : ''}`} id={`v-pills-img${index + 1 }-tab`} data-bs-toggle="pill" data-bs-target={`#v-pills-img${index + 1}`} type="button" role="tab" aria-controls={`v-pills-img${index + 1}`} aria-selected={index === 0}>
+                                    <img key={index} src={img} alt=""  className="smallCardPet" />
+                                  </button>
+                                ))}     
+                            </div> */}
+                        </div>
+                        <div className="col-lg-5">
+                            <div className="services-datails-content">
+                                <div className="banner-title">
+                                    <h2>my Pet</h2>
+                                    <div className="currency">
+                                        <h5>Pet</h5>
+                                    </div>
+                                </div>
 
+                                <div className="service-area">
+                                    <form onSubmit={handleSubmit}>
+
+                                        <div className="row g-4">
+                                            <div className="col-lg-12">
+                                                <div className="form-inner">
+                                                    <label>Type</label>
+                                                    <select id="duration">
+                                                        <option>Choose an option</option>
+                                                        <option>Cat</option>
+                                                        <option>Dog</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            {pets.map(pet => (
+                                            <div className="col-lg-12">
+                                          
+                                                <div class="form-inner">
+                                                    <label>Name : </label>
+                                                    <input type="text" name="name" placeholder="color pet "
+
+                                                      value={pet.name}
+                                                      onChange={
+                                                          (event) => {
+                                                              setName(event.target.value);
+                                                          }
+                                                      }
+                                                      />
+                                                </div>
+                                                
+                                            <div class="form-inner">
+                                                <label>Color : 
+                                                </label>
+                                                <input type="text" name="color" placeholder="color pet "
+
+                                                  value={pet.color}
+                                                  onChange={
+                                                      (event) => {
+                                                          setColor(event.target.value);
+                                                      }
+                                                  }
+                                                  />
+                                            </div>
+                                           
+                                            <div class="form-inner">
+                                         
+
+                                        <ul>
+     
+    </ul>
+
+                                    </div>
+                                    <div className="shop-quantity d-flex flex-wrap align-items-center justify-content-start mb-20">
+                                        <div className="quantity d-flex align-items-center">
+                                            <div className="quantity-nav nice-number d-flex align-items-center"></div>
+                                        </div>
+                                        <button type="submit" className="primary-btn3">Add Pet</button>
+                                    </div>
+
+                                    </div>
+                                     ))}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
+      
       </div>
-
 
 
 
