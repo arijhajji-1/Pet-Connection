@@ -31,10 +31,10 @@ function UpdateLost() {
             // Set form fields with data of the lost post to update
                 const lostPost = response.data.find(pet => pet._id === String(id));
                 if (lostPost) {
-                setColor(lostPost.color);
-                setType(lostPost.type);
-                setLocation(lostPost.location);
-                setDescription(lostPost.description);
+                // setColor(lostPost.color);
+                // setType(lostPost.type);
+                // setLocation(lostPost.location);
+                // setDescription(lostPost.description);
                 }
           })
           .catch(error => {
@@ -75,7 +75,7 @@ const handleSubmit = async (e) => {
 
       // Show success message or perform other UI updates
       toast.success('post updated successfully');
-      history.push('/listlost');
+      history.push('/addlost');
       window.location.reload();
     } catch (error) {
       // Handle error and show error message

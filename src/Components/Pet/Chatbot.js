@@ -7,6 +7,7 @@ export function ChatBot() {
 	const [prompt, setPrompt] = useState("");
 	const [response, setResponse] = useState("");
 	const [reponse, setReponse] = useState("");
+  
 	const chatboxMessageWrapper = document.querySelector('.chatbox-message-content')
 	function addZero(num) {
 		return num < 10 ? '0'+num : num

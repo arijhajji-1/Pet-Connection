@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button } from 'react-bootstrap';
 import { login, register, editProfil } from "./api";
-import { Await} from "react-router-dom";
+import { Await } from "react-router-dom";
 import { NavLink, Routes, Route } from "react-router-dom";
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from "axios";
@@ -18,55 +18,55 @@ import { disable2FA } from './api';
 import './profile.css'
 const schema = yup.object().shape({
   username: yup.string()
-      .required()
-      .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d]+$/, "Username must contain at least one letter, and no spiciness")
-      .max(20, "Username cannot exceed 20 characters")
-      .min(3,"Username must exceed 3 characters"),
+    .required()
+    .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d]+$/, "Username must contain at least one letter, and no spiciness")
+    .max(20, "Username cannot exceed 20 characters")
+    .min(3, "Username must exceed 3 characters"),
 
 
   name: yup.string()
-       .required()
-       .matches(/^[^\d]+$/, "name must not contain numbers")
-       .max(20, "name cannot exceed 20 characters")
-       .min(3,"name must exceed 3 characters"),
+    .required()
+    .matches(/^[^\d]+$/, "name must not contain numbers")
+    .max(20, "name cannot exceed 20 characters")
+    .min(3, "name must exceed 3 characters"),
 
 
   email: yup.string()
-      .required()
-  // .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d]+@(?:[a-zA-Z\d]+\.)+(?:com|tn)$/,'email must be in this form exp@exp.com ou exp@exp.tn')
-      .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d._]+@(?:[a-zA-Z\d]+\.)+(?:com|tn)$/,'email must be in this form exp@exp.com ou exp@exp.tn'), // accepte . ou milieu
+    .required()
+    // .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d]+@(?:[a-zA-Z\d]+\.)+(?:com|tn)$/,'email must be in this form exp@exp.com ou exp@exp.tn')
+    .matches(/^(?=.*[a-zA-Z])[a-zA-Z\d._]+@(?:[a-zA-Z\d]+\.)+(?:com|tn)$/, 'email must be in this form exp@exp.com ou exp@exp.tn'), // accepte . ou milieu
 
 
-      
+
 
 
 
 
   location: yup.string()
-       .required()
-       .matches(/^[A-Z][a-zA-Z]*$/, 'location must begin with an uppercase letter and must contain only letters.')
-       .max(20, "location cannot exceed 20 characters")
-       .min(3,"location must exceed 3 characters"),
+    .required()
+    .matches(/^[A-Z][a-zA-Z]*$/, 'location must begin with an uppercase letter and must contain only letters.')
+    .max(20, "location cannot exceed 20 characters")
+    .min(3, "location must exceed 3 characters"),
 
 
 
   phone: yup.string()
-       .required()
-       .matches(/^[0-9]{8}$/, 'phone field must contain 8 digits without spaces or special characters.'),
-     
+    .required()
+    .matches(/^[0-9]{8}$/, 'phone field must contain 8 digits without spaces or special characters.'),
+
 
 
   image: yup.mixed()
-  .required()
-  .test('fileFormat', 'The file must be in JPEG, PNG or JPG format', (value) =>
-    value && ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type)
-  )
+    .required()
+    .test('fileFormat', 'The file must be in JPEG, PNG or JPG format', (value) =>
+      value && ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type)
+    )
 
-  });
+});
 
 
- 
- 
+
+
 
 
 
@@ -75,14 +75,16 @@ function Profile() {
   const navigate = useNavigate();
   const param = useParams();
   const [imageSrc, setImageSrc] = useState(''); // importer image user 
+  const [images, setImages] = useState([]);
   const [pets, setPets] = useState([]);
-  const [name, setName] = useState('');
-  const [color, setColor] = useState('');
+  const [name, setName] = useState("");
+  const [color, setColor] = useState("");
   const [type, setType] = useState('');
   const userFromLocalStorageString = localStorage.getItem('user');
   const user1 = userFromLocalStorageString ? JSON.parse(userFromLocalStorageString) : null;
+  const { id } = useParams();
   useEffect(() => {
-     
+
     console.log(user1);
     axios.post('http://127.0.0.1:3000/pet/AllpetsByUser/', { user1 })
       .then(response => {
@@ -91,13 +93,14 @@ function Profile() {
         setName(response.data.pets.name);
         setColor(response.data.pets.color);
         setType(response.data.pets.type);
+        console.log(response.data.pets.images)
       })
       .catch(error => {
         console.error(error);
       });
   }, []);
 
-  const handleSubmitupdatepet = async (e,id) => {
+  const handleSubmitupdatepet = async (e, id) => {
     e.preventDefault();
 
     try {
@@ -106,7 +109,7 @@ function Profile() {
         name,
         color,
         type,
-        
+
       });
 
       // Show success message or perform other UI updates
@@ -127,7 +130,7 @@ function Profile() {
     location: '',
     phone: '',
     image: null,
-    password:''
+    password: ''
 
   });
 
@@ -139,7 +142,7 @@ function Profile() {
   useEffect(() => {
 
     const userFromLocalStorage = JSON.parse(localStorage.getItem('user'));
-    const id = userFromLocalStorage._id|userFromLocalStorage.facebookId;
+    const id = userFromLocalStorage._id | userFromLocalStorage.facebookId;
     console.log("iduserconnecte " + id)
 
     setUser(userFromLocalStorage);
@@ -212,7 +215,7 @@ function Profile() {
 
   ////// envoi de formulaire
   const handleSubmit = async e => {
-    const id = user._id||user.facebookId;
+    const id = user._id || user.facebookId;
     e.preventDefault();
     setFormSubmitted(true);
 
@@ -268,76 +271,76 @@ function Profile() {
   });
 
 
-//2FA
-const [qrCodeData, setQrCodeData] = useState(null);
-const [secretKey, setSecretKey] = useState(null);
-const [showResults, setShowResults] = useState(false);
+  //2FA
+  const [qrCodeData, setQrCodeData] = useState(null);
+  const [secretKey, setSecretKey] = useState(null);
+  const [showResults, setShowResults] = useState(false);
 
-const User = JSON.parse(localStorage.getItem("user"));
-const token = User.accessToken;
+  const User = JSON.parse(localStorage.getItem("user"));
+  const token = User.accessToken;
 
-const handleEnable2FA = () => {
-  const id = User._id||User.facebookId;
-  console.log(id)
-  
-  enable2FA(id)
-    .then((response) => {
-      const qrCode = response.data.qrCode;
-      const secret = response.data.secret;
-      console.log(qrCode);
-      console.log(secret);
-      setQrCodeData(qrCode);
-      setSecretKey(secret);
-      setShowResults(true);
-    })
-    .catch((error) => {
-      console.log("khlet 2");
-    });
-};
+  const handleEnable2FA = () => {
+    const id = User._id || User.facebookId;
+    console.log(id)
 
-const qrStyle = {
- 
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  margin: '10px',
-}
+    enable2FA(id)
+      .then((response) => {
+        const qrCode = response.data.qrCode;
+        const secret = response.data.secret;
+        console.log(qrCode);
+        console.log(secret);
+        setQrCodeData(qrCode);
+        setSecretKey(secret);
+        setShowResults(true);
+      })
+      .catch((error) => {
+        console.log("khlet 2");
+      });
+  };
 
+  const qrStyle = {
 
-
-const QR = () => (
-  <div style={qrStyle}>
-        <h4 color="Red">Please scan this Qr code and save your authentication code for your login</h4>
-
-    <img src={qrCodeData} alt="QR Code" />
-    {/* <p>secretKey: "{secretKey}"</p> */}
-
-  </div>
-);
-
-useEffect(() => {
-  if (showResults && qrCodeData) {
-    console.log("qrCodeData", qrCodeData);
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: '10px',
   }
-}, [qrCodeData, showResults]);
-//disable 2Fa
-const Utilisateur = JSON.parse(localStorage.getItem('user'));
 
-const handleDisable2FA = async () => {
-  try {
-    const id = Utilisateur._id||Utilisateur.facebookId;
-    const response = await disable2FA(id);
-    console.log('Two-Factor Authentication has been disabled');
-    console.log('Response:', response.data);
-    alert("2fa has been disabled");
-    window.location.reload();
-    
-    // or update the state of your component to reflect the change
-  } catch (error) {
-    console.log('Error disabling Two-Factor Authentication:', error);
-    // or display an error message to the user
-  }
-};
+
+
+  const QR = () => (
+    <div style={qrStyle}>
+      <h4 color="Red">Please scan this Qr code and save your authentication code for your login</h4>
+
+      <img src={qrCodeData} alt="QR Code" />
+      {/* <p>secretKey: "{secretKey}"</p> */}
+
+    </div>
+  );
+
+  useEffect(() => {
+    if (showResults && qrCodeData) {
+      console.log("qrCodeData", qrCodeData);
+    }
+  }, [qrCodeData, showResults]);
+  //disable 2Fa
+  const Utilisateur = JSON.parse(localStorage.getItem('user'));
+
+  const handleDisable2FA = async () => {
+    try {
+      const id = Utilisateur._id || Utilisateur.facebookId;
+      const response = await disable2FA(id);
+      console.log('Two-Factor Authentication has been disabled');
+      console.log('Response:', response.data);
+      alert("2fa has been disabled");
+      window.location.reload();
+
+      // or update the state of your component to reflect the change
+    } catch (error) {
+      console.log('Error disabling Two-Factor Authentication:', error);
+      // or display an error message to the user
+    }
+  };
 
 
 
@@ -375,7 +378,7 @@ const handleDisable2FA = async () => {
               <ul className="navbar-nav align-items-center d-none d-md-flex">
                 <li className="nav-item dropdown">
                   <a className="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  
+
                   </a>
                   <div className="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
                     <div className=" dropdown-header noti-title">
@@ -431,9 +434,9 @@ const handleDisable2FA = async () => {
                     <div className="col-lg-3 order-lg-2">
                       <div className="card-profile-image">
                         <a>
-                        {imageSrc !== '' ? <img src={imageSrc} alt={user.name} className="rounded-circle" /> :
+                          {imageSrc !== '' ? <img src={imageSrc} alt={user.name} className="rounded-circle" /> :
 
-<img  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSOGcje-B89rfsytrpDJELPk1OPGA0tXLElNx837LS&s" className="rounded-circle" />}                        </a>
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSOGcje-B89rfsytrpDJELPk1OPGA0tXLElNx837LS&s" className="rounded-circle" />}                        </a>
                       </div>
                     </div>
                   </div>
@@ -574,12 +577,12 @@ const handleDisable2FA = async () => {
                         </div>
                       </div>
                       <div className="col-12 text-right mr-5">
-                      <button className="btn btn-sm btn-primary" onClick={handleDisable2FA}>Disable Two-Factor Authentication</button>
+                        <button className="btn btn-sm btn-primary" onClick={handleDisable2FA}>Disable Two-Factor Authentication</button>
 
                         <button className="btn btn-sm btn-primary" onClick={handleEnable2FA}>
-       Enable Two factor Authentication
-      </button>
-      {showResults ? <QR /> : null}
+                          Enable Two factor Authentication
+                        </button>
+                        {showResults ? <QR /> : null}
                         <button type="submit" className="btn btn-sm btn-primary">Modifier Profile</button >
                       </div>
                     </form>
@@ -587,115 +590,84 @@ const handleDisable2FA = async () => {
                     {/*-------------------------------------------------------------------------------------------------------------------  */}
 
                   </div>
-                  <div className="services-details-area pt-120 mb-120">
-                <div className="container">
-                    <div className="row g-lg-4 gy-5 mb-120">
-                        <div className="col-lg-7">
-                            <div className="tab-content tab-content1" id="v-pills-tabContent">
-                              
-                                <img src="/assets/images/add-image4.png" id="chose" className="responsiveImg"/>
-                              
-{/*                                 
-                                {image.map((img, index) => (
-                                  <div className={`tab-pane fade ${index === 0 ? 'active show' : ''}`} id={`v-pills-img${index + 1}`} role="tabpanel" aria-labelledby={`v-pills-img${index + 1}-tab`}>
-                                   <img className="img-fluid bigCardPet" src={img} alt=""/>
-                                  </div>
-                                  ))}  */}
-                            </div>
-                            {/* <div className="nav nav1 nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                {image.map((img, index) => (
-                                  <button className={`nav-link ${index === 0 ? 'active' : ''}`} id={`v-pills-img${index + 1 }-tab`} data-bs-toggle="pill" data-bs-target={`#v-pills-img${index + 1}`} type="button" role="tab" aria-controls={`v-pills-img${index + 1}`} aria-selected={index === 0}>
-                                    <img key={index} src={img} alt=""  className="smallCardPet" />
-                                  </button>
-                                ))}     
-                            </div> */}
-                        </div>
-                        <div className="col-lg-5">
-                            <div className="services-datails-content">
-                                <div className="banner-title">
-                                    <h2>my Pet</h2>
-                                    <div className="currency">
-                                        <h5>Pet</h5>
-                                    </div>
-                                </div>
 
-                                <div className="service-area">
-                                    <form onSubmit={handleSubmit}>
-
-                                        <div className="row g-4">
-                                            <div className="col-lg-12">
-                                                <div className="form-inner">
-                                                    <label>Type</label>
-                                                    <select id="duration">
-                                                        <option>Choose an option</option>
-                                                        <option>Cat</option>
-                                                        <option>Dog</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            {pets.map(pet => (
-                                            <div className="col-lg-12">
-                                          
-                                                <div class="form-inner">
-                                                    <label>Name : </label>
-                                                    <input type="text" name="name" placeholder="color pet "
-
-                                                      value={pet.name}
-                                                      onChange={
-                                                          (event) => {
-                                                              setName(event.target.value);
-                                                          }
-                                                      }
-                                                      />
-                                                </div>
-                                                
-                                            <div class="form-inner">
-                                                <label>Color : 
-                                                </label>
-                                                <input type="text" name="color" placeholder="color pet "
-
-                                                  value={pet.color}
-                                                  onChange={
-                                                      (event) => {
-                                                          setColor(event.target.value);
-                                                      }
-                                                  }
-                                                  />
-                                            </div>
-                                           
-                                            <div class="form-inner">
-                                         
-
-                                        <ul>
-     
-    </ul>
-
-                                    </div>
-                                    <div className="shop-quantity d-flex flex-wrap align-items-center justify-content-start mb-20">
-                                        <div className="quantity d-flex align-items-center">
-                                            <div className="quantity-nav nice-number d-flex align-items-center"></div>
-                                        </div>
-                                        <button type="submit" className="primary-btn3">Add Pet</button>
-                                    </div>
-
-                                    </div>
-                                     ))}
-                                </div>
-                            </form>
-                        </div>
-                    </div>
                 </div>
+
+
+              </div>
+
             </div>
+            <div className="newsletter-area mb-120">
+              <div className="container">
+                <div className="row">
+                  <div className="col-lg-12">
+                    <div className="newsletter-wrap">
+                      <div className="section-title1 text-center mb-40">
+                        <span>
+                          <img src="assets/images/icon/section-vec-l1.svg" alt="" />
+                          DOG
+                          <img src="assets/images/icon/section-vec-r1.svg" alt="" />
+                        </span>
+                        <h2>my Pet</h2>
+                      </div>
+
+                      {pets.map(pet => (
+                        <div>
+                          <img src={`http://127.0.0.1:3000/pet/image/${pet.images[0]}`} id="chose" className="responsiveImg" style={{ height: '300px', width: '1100px' }} />
+
+                          <form onSubmit={(e)=>handleSubmitupdatepet(e,pet._id)}>
+                            <div className="form-inner">
+                              <input type="text"
+
+                        value={name} 
+                                onChange={e => setName(e.target.value)}/>
+
+                            </div>
 
 
-        </div>
-    </div>
+
+                            <div className="form-inner">
+
+                              <input type="text"
+
+                            value={color} 
+                                onChange={e => setColor(e.target.value)}
+                              />
+
+                            </div>
+
+                            <div className="form-inner">
+
+                              <select name="type" id="type" className="form-control" value={type} onChange={e => setType(e.target.value)}>
+                                <option value="dog">Dog</option>
+                                <option value="cat">Cat</option>
+                                <option value="bird">Bird</option>
+                                <option value="fish">Fish</option>
+                                <option value="rabbit">Rabbit</option>
+                                <option value="hamster">Hamster</option>
+
+                              </select>
+                              <button className="primary-btn1"  type="submit">
+                            update
+                            </button>
+                            </div>
+
+                           
+
+                          </form>
+
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+
+
           </div>
         </div>
-      
+
       </div>
 
 
