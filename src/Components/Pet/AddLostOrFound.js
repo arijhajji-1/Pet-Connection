@@ -81,6 +81,7 @@ const handleDelete = async (id) => {
             formData.append("image", image[i]);
         }
 
+        toast.success('Lost pet added successfully');
         const url = 'http://127.0.0.1:3000/pet/addlost'
         axios.post(url, formData).then(data => {
 
@@ -88,7 +89,7 @@ const handleDelete = async (id) => {
             // if (user.location === location) {
             //     toast.info(`A lost pet was reported in your area (${location})! If you see anything, please contact the owner.`);
             //   }
-            toast.success('Lost pet added successfully');
+            
             history.push('/listlost');
             window.location.reload();
         }).catch(error => {

@@ -77,28 +77,51 @@ function Profile() {
   const [imageSrc, setImageSrc] = useState(''); // importer image user 
   const [images, setImages] = useState([]);
   const [pets, setPets] = useState([]);
-  const [name, setName] = useState("");
-  const [color, setColor] = useState("");
+  const [name, setName] = useState('');
+  const [color, setColor] = useState('');
   const [type, setType] = useState('');
+  
+  const [breed,setBreed]=useState('');
   const userFromLocalStorageString = localStorage.getItem('user');
   const user1 = userFromLocalStorageString ? JSON.parse(userFromLocalStorageString) : null;
   const { id } = useParams();
   useEffect(() => {
 
-    console.log(user1);
     axios.post('http://127.0.0.1:3000/pet/AllpetsByUser/', { user1 })
       .then(response => {
+
         setPets(response.data);
-        console.log(response.data)
-        setName(response.data.pets.name);
-        setColor(response.data.pets.color);
-        setType(response.data.pets.type);
-        console.log(response.data.pets.images)
+        // console.log(response.data)
+        setName(response.data[0].name || "");
+        setColor(response.data[0].color || "");
+        setType(response.data[0].type || "");
+        setImages(response.data[0].images);
+        setBreed(response.data[0].breed);
+        console.log("imageeee" + response.data[0].images)
+        console.log(response.data);
       })
       .catch(error => {
         console.error(error);
       });
   }, []);
+  //delete image from pet 
+  const handleDelete = async (petId,id) => {
+    try {
+      // Send DELETE request to the API endpoint
+      
+    console.log(user1);
+      await axios.put(`http://127.0.0.1:3000/pet/deletimagepet/${petId}`,{ user1 });
+
+   
+      // setImages(images.filter(pet => pet._id !== id));
+  
+      // Show a success message using a toast library or any other UI component
+      toast.success(' Image deleted successfully');
+    } catch (error) {
+      // Handle error and show an error message
+      toast.error('Failed to delete Image');
+    }
+  }
 
   const handleSubmitupdatepet = async (e, id) => {
     e.preventDefault();
@@ -113,7 +136,7 @@ function Profile() {
       });
 
       // Show success message or perform other UI updates
-      toast.success('post updated successfully');
+      toast.success('Pet updated successfully');
       // history.push('/listlost');
       // window.location.reload();
     } catch (error) {
@@ -411,7 +434,7 @@ function Profile() {
             </div>
           </nav>
           {/* Header */}
-          <div className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style={{ height: "30vh", backgroundImage: 'url(https://raw.githubusercontent.com/creativetimofficial/argon-dashboard/gh-pages/assets-old/img/theme/profile-cover.jpg)', backgroundSize: 'cover', backgroundPosition: 'center top' }}>
+          <div className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style={{ height: "30vh" }}>
             {/* Mask */}
             <span className="mask bg-gradient-default opacity-8" />
             {/* Header container */}
@@ -420,7 +443,7 @@ function Profile() {
                 <div className="col-lg-7 col-md-10">
                   <h2 className="display-2 text-white">Hello,  {user.username}</h2>
                   <p className="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your work and manage your projects or assigned tasks</p>
-                  <a href="#!" className="btn btn-info">Edit profile</a>
+                  {/* <a href="#!" className="btn btn-info">Edit profile</a> */}
                 </div>
               </div>
             </div>
@@ -455,7 +478,7 @@ function Profile() {
                             <span className="description">Publication</span>
                           </div>
                           <div>
-                            <span className="heading">10</span>
+                            <span className="heading">1</span>
                             <span className="description">Animaux</span>
                           </div>
                           <div>
@@ -483,7 +506,7 @@ function Profile() {
                       <div>
                         <i className="ni education_hat mr-2" />Location : {user.location}
                       </div>
-                      <hr className="my-4" />
+                      <hr className="my-4 new1" />
                       <a style={{ color: 'white' }}>Show more</a>
                     </div>
                   </div>
@@ -576,28 +599,111 @@ function Profile() {
                           </div>
                         </div>
                       </div>
-                      <div className="col-12 text-right mr-5">
-                        <button className="btn btn-sm btn-primary" onClick={handleDisable2FA}>Disable Two-Factor Authentication</button>
+                      <div className="col-12 text-right mr-5 prof">
+                        <button className="btn btn-sm primary-btn1" onClick={handleDisable2FA}>Disable Two-Factor Authentication</button>
 
-                        <button className="btn btn-sm btn-primary" onClick={handleEnable2FA}>
+                        <button className="btn btn-sm primary-btn1" onClick={handleEnable2FA}>
                           Enable Two factor Authentication
                         </button>
                         {showResults ? <QR /> : null}
-                        <button type="submit" className="btn btn-sm btn-primary">Modifier Profile</button >
+                        <button type="submit" className="btn btn-sm primary-btn1">Modifier Profile</button >
                       </div>
                     </form>
                     {/*-------------------------------------------------------------------------------------------------------------------  */}
                     {/*-------------------------------------------------------------------------------------------------------------------  */}
+                    <h6 className="heading-small text-muted mb-4">Pet information</h6>
+                    {pets.map(pet => (
+                      <form onSubmit={(e) => handleSubmitupdatepet(e, pet._id)}>
+
+
+                        <div className="pl-lg-4">
+                          <div className="row">
+                            <div className="col-md-12">
+                              <div className="form-group focused">
+                                <label className="form-control-label" for="input-address">Breed</label>
+                                <input id="input-address" className="form-control form-control-alternative" type="text" value={breed}
+                                  onChange={e => setBreed(e.target.value)} />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-lg-4">
+                              <div className="form-group focused">
+                                <label className="form-control-label" for="input-city">Name</label>
+                                <input className="text" id="input-city" class="form-control form-control-alternative" value={name}
+                                  onChange={e => setName(e.target.value)} />
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <div className="form-group focused">
+                                <label className="form-control-label" for="input-country">Color</label>
+                                <input type="text" id="input-country" className="form-control form-control-alternative"
+                                  value={color}
+                                  onChange={e => setColor(e.target.value)} />
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <div className="form-group">
+                                <label className="form-control-label" for="input-country">Type</label>
+                                <select type="number" id="input-postal-code" className="form-control form-control-alternative" value={type} onChange={e => setType(e.target.value)}>
+
+                                  <option value="cat">Cat</option>
+                                  <option value="dog">Dog</option>
+                                  <option value="cat">Cat</option>
+                                  <option value="bird">Bird</option>
+                                  <option value="fish">Fish</option>
+                                  <option value="rabbit">Rabbit</option>
+                                  <option value="hamster">Hamster</option>
+                                </select>
+                              </div>
+                            </div>
+                            <button type="submit" className="btn btn-sm primary-btn1">Update Pet </button >
+                          </div>
+                        </div>
+                      </form>
+                    ))}
+                    <h6 className="heading-small text-muted mb-4">Gallery</h6>
+                    <div id="petGallery-container">
+                      <div className="" id="petGallery">
+                        <div className="tab-content tab-content1" id="v-pills-tabContent">
+                          {/* <img src={`http://127.0.0.1:3000/pet/image/${pet.images[0]}`} id="chose" className="responsiveImg" style={{ height: '300px', width: '1100px' }} /> */}
+
+                          {images.map((img, index) => (
+                            
+                            
+                            <div className={`tab-pane fade ${index === 0 ? 'active show' : ''}`} id={`v-pills-img${index + 1}`} role="tabpanel" aria-labelledby={`v-pills-img${index + 1}-tab`}>
+                              
+                              <div className="delete-btn" 
+                              onClick={() => handleDelete(pets[0]._id)}
+                              >
+                                            <i className="bi bi-x-lg"></i>
+                              </div>
+                              <img className="img-fluid bigCardPet" src={`http://127.0.0.1:3000/pet/image/${img}`} alt="" />
+                              
+                            </div>
+                            
+                          ))}
+                          
+                        </div>
+                        <div className="nav nav1 nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                          {images.map((img, index) => (
+                            <button className={`nav-link ${index === 0 ? 'active' : ''}`} id={`v-pills-img${index + 1}-tab`} data-bs-toggle="pill" data-bs-target={`#v-pills-img${index + 1}`} type="button" role="tab" aria-controls={`v-pills-img${index + 1}`} aria-selected={index === 0}>
+                              <img key={index} src={`http://127.0.0.1:3000/pet/image/${img}`} alt="" className="smallCardPet" />
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
 
                   </div>
 
+
                 </div>
-
-
               </div>
 
+
             </div>
-            <div className="newsletter-area mb-120">
+            {/* <div className="newsletter-area mb-120">
               <div className="container">
                 <div className="row">
                   <div className="col-lg-12">
@@ -619,7 +725,7 @@ function Profile() {
                             <div className="form-inner">
                               <input type="text"
 
-                        value={name} 
+                                value={name} 
                                 onChange={e => setName(e.target.value)}/>
 
                             </div>
@@ -639,6 +745,7 @@ function Profile() {
                             <div className="form-inner">
 
                               <select name="type" id="type" className="form-control" value={type} onChange={e => setType(e.target.value)}>
+                              <option value="cat">Cat</option>
                                 <option value="dog">Dog</option>
                                 <option value="cat">Cat</option>
                                 <option value="bird">Bird</option>
@@ -662,7 +769,7 @@ function Profile() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
 
           </div>

@@ -31,10 +31,10 @@ function UpdateLost() {
             // Set form fields with data of the lost post to update
                 const lostPost = response.data.find(pet => pet._id === String(id));
                 if (lostPost) {
-                // setColor(lostPost.color);
-                // setType(lostPost.type);
-                // setLocation(lostPost.location);
-                // setDescription(lostPost.description);
+                setColor(lostPost.color);
+                setType(lostPost.type);
+                setLocation(lostPost.location);
+                setDescription(lostPost.description);
                 }
           })
           .catch(error => {
@@ -59,6 +59,7 @@ function UpdateLost() {
         console.log(e.target.value);
         setLocation(e.target.value);
     };
+    // 
    
 // Event handler for form submission
 const handleSubmit = async (e) => {
@@ -70,13 +71,16 @@ const handleSubmit = async (e) => {
         color,
         type,
         location,
-        description
+        description,
+        image
+      }).then(data=>{
+        toast.success('post updated successfully');
+      history.push('/addlost');
+      window.location.reload();
       });
 
       // Show success message or perform other UI updates
-      toast.success('post updated successfully');
-      history.push('/addlost');
-      window.location.reload();
+      
     } catch (error) {
       // Handle error and show error message
       toast.success('failed to update post');

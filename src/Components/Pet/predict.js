@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Predict = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [prediction, setPrediction] = useState(null);
@@ -16,7 +17,7 @@ const Predict = () => {
       // Create a FormData object to send the file data as form data
       const formData = new FormData();
       formData.append('image', selectedImage);
-  
+      toast.success('please wait for the response ');
       // Make a POST request to the /predict endpoint with the FormData object
       const response = await axios.post('http://127.0.0.1:3000/pet/predict', formData, {
         headers: {
@@ -104,7 +105,7 @@ const Predict = () => {
                 <div className="error-btn">
                   <form onClick={(e)=>handlePredict(e)}> 
                
-                      <button className="primary-btn1"  type="submit"> Predict</button>
+                      <button className="btn  primary-btn1"  type="submit"> Predict</button>
                 </form>
                 {prediction && (
                     <div>
@@ -119,6 +120,9 @@ const Predict = () => {
                 </div>
               )}
                 </div>
+                
+                <ToastContainer />
+
               </div>
             </div>
           </div>
