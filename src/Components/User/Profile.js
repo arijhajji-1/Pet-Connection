@@ -14,7 +14,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { enable2FA } from './api';
 import { disable2FA } from './api';
-
+import {createBrowserHistory} from 'history';
 import './profile.css'
 const schema = yup.object().shape({
   username: yup.string()
@@ -80,7 +80,7 @@ function Profile() {
   const [name, setName] = useState('');
   const [color, setColor] = useState('');
   const [type, setType] = useState('');
-  
+  const history = createBrowserHistory();
   const [breed,setBreed]=useState('');
   const userFromLocalStorageString = localStorage.getItem('user');
   const user1 = userFromLocalStorageString ? JSON.parse(userFromLocalStorageString) : null;
@@ -123,6 +123,11 @@ function Profile() {
       toast.error('Failed to delete Image');
     }
   }
+  const addpet = () => {
+    // Redirect to another page when the button is clicked
+    history.push('/addpet'); 
+    window.location.reload();
+  };
 
   const handleSubmitupdatepet = async (e, id) => {
     e.preventDefault();
@@ -480,11 +485,11 @@ function Profile() {
                           </div>
                           <div>
                             <span className="heading">1</span>
-                            <span className="description">Animaux</span>
+                            <span className="description">Pets</span>
                           </div>
                           <div>
                             <span className="heading">89</span>
-                            <span className="description">Commentaires</span>
+                            <span className="description">Comments</span>
                           </div>
                         </div>
                       </div>
@@ -509,8 +514,11 @@ function Profile() {
                       </div>
                       <hr className="my-4 new1" />
                       <a style={{ color: 'white' }}>Show more</a>
+                      
                     </div>
+                    
                   </div>
+                  <button  onClick={addpet} className="btn btn-sm primary-btn1">Add Pet</button >
                 </div>
               </div>
 
@@ -607,11 +615,14 @@ function Profile() {
                           Enable Two factor Authentication
                         </button>
                         {showResults ? <QR /> : null}
-                        <button type="submit" className="btn btn-sm primary-btn1">Modifier Profile</button >
+                        <button type="submit" className="btn btn-sm primary-btn1">update Profile</button >
                       </div>
                     </form>
                     {/*-------------------------------------------------------------------------------------------------------------------  */}
                     {/*-------------------------------------------------------------------------------------------------------------------  */}
+     {pets.length > 0 && (          
+      <div>
+                
                     <h6 className="heading-small text-muted mb-4">Pet information</h6>
                     {pets.map(pet => (
                       <form onSubmit={(e) => handleSubmitupdatepet(e, pet._id)}>
@@ -695,7 +706,8 @@ function Profile() {
                         </div>
                       </div>
                     </div>
-
+      </div>
+     )}
                   </div>
 
 

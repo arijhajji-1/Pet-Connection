@@ -55,11 +55,11 @@ function Header() {
                     Home
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink to="/About">About</NavLink>
-                </li>
-                <li>
-                  <a href="#">Services</a>
+                 
+                <li  >
+                  <NavLink to="/listlost"  >
+                    Lost and found
+                  </NavLink>
                 </li>
 
 <li><NavLink to='/profile'>profile</NavLink></li>
@@ -72,7 +72,8 @@ function Header() {
                   <a href="#">Blog</a>
                 </li>
                 <li>
-                  <a href="contact.html">Contact</a>
+                 
+                  <NavLink to="/predict">Predict breed</NavLink>
                 </li>
                 {/* <Link to="About">Contact</Link> */}
               </ul>

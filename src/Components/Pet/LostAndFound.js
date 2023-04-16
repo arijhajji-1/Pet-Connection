@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createBrowserHistory } from 'history';
-
+ 
 import { Link } from 'react-router-dom';
 
 
@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 function AddPet() {
     const [selectedLostPetId, setSelectedLostPetId] = useState(null);
     const [lostPets, setLostPets] = useState([]);
+    const history = createBrowserHistory();
     useEffect(() => {
         axios.get('http://127.0.0.1:3000/pet/getAllLostAndFound')
           .then(response => {
@@ -20,6 +21,11 @@ function AddPet() {
             console.error(error);
           });
       }, []);
+      const addPost = () => {
+        // Redirect to another page when the button is clicked
+        history.push('/addlost'); 
+        window.location.reload();
+      };
     
     return (<div>
 
@@ -110,19 +116,10 @@ function AddPet() {
                                     </div>
                                 </form>
                             </div>
-                            <div className="single-widgets widget_egns_categoris mb-30">
-                                <div className="widget-title">
-                                    <h3>Category</h3>
-                                </div>
-                                <ul className="wp-block-categoris-cloud">
-                                    <li><a href="blog-grid.html"><span>Pet Grooming</span> <span><span className="number-of-categoris">(30)</span><i className="bi bi-arrow-right-short"></i></span></a></li>
-                                    <li><a href="blog-grid.html"><span>Medical Care</span> <span><span className="number-of-categoris">(18)</span><i className="bi bi-arrow-right-short"></i></span> </a></li>
-                                    <li><a href="blog-grid.html"><span>Pet Bording</span> <span><span className="number-of-categoris">(21)</span><i className="bi bi-arrow-right-short"></i></span> </a></li>
-                                    <li><a href="blog-grid.html"><span>Pet Daycare</span> <span><span className="number-of-categoris">(25)</span><i className="bi bi-arrow-right-short"></i></span> </a></li>
-                                    <li><a href="blog-grid.html"><span>Pet Walking</span> <span><span className="number-of-categoris">(29)</span><i className="bi bi-arrow-right-short"></i></span> </a></li>
-                                    <li><a href="blog-grid.html"><span>Education Pet</span> <span><span className="number-of-categoris">(31)</span><i className="bi bi-arrow-right-short"></i></span> </a></li>
-                                </ul>
-                            </div>
+                            
+                                
+                                <button  onClick={addPost} className="btn btn-sm primary-btn1">Add Post</button >
+                            
                             <div className="single-widgets widget_egns_recent_post mb-30">
                                 <div className="widget-title">
                                     <h3>Newest Posts</h3>
