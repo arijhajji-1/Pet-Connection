@@ -113,7 +113,8 @@ function Profile() {
       await axios.put(`http://127.0.0.1:3000/pet/deletimagepet/${petId}`,{ user1 });
 
    
-      // setImages(images.filter(pet => pet._id !== id));
+      images.shift(); // Remove the first element from the array
+      setImages([...images]);
   
       // Show a success message using a toast library or any other UI component
       toast.success(' Image deleted successfully');

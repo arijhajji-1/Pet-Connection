@@ -2,7 +2,8 @@ import React, {useEffect} from "react";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {createBrowserHistory} from 'history';
- 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 
  
@@ -63,6 +64,7 @@ function AddPet() {
             formData.append("images", images[i]);
         }
         const url = 'http://127.0.0.1:3000/pet/addpetwithUser'
+        toast.success(' Please wait');
         axios.post(url, formData).then(data => {
            
            
@@ -165,7 +167,7 @@ function AddPet() {
                 </div>
             </div>
 
-
+            <ToastContainer />
         </div>
     </div>
 

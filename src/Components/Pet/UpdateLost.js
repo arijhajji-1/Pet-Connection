@@ -12,6 +12,7 @@ function UpdateLost() {
   
     const [color, setColor] = useState("");
     const [type, setType] = useState("");
+    const [breed, setBreed] = useState("");
     const [location, setLocation] = useState("");
     const [image, setImage] = useState([]);
     const [description, setDescription] = useState("");
@@ -35,6 +36,7 @@ function UpdateLost() {
                 setType(lostPost.type);
                 setLocation(lostPost.location);
                 setDescription(lostPost.description);
+                setBreed(lostPost.breed);
                 }
           })
           .catch(error => {
@@ -45,10 +47,8 @@ function UpdateLost() {
    
     const handleImageChange = (event) => {
 
-        setImage([
-            ...image,
-            ...event.target.files
-        ]);
+        const file = event.target.files[0];
+    setImage(file);
 
     };
     const handleTypeChange = (e) => {
@@ -72,7 +72,8 @@ const handleSubmit = async (e) => {
         type,
         location,
         description,
-        image
+        image,
+        breed
       }).then(data=>{
         toast.success('post updated successfully');
       history.push('/addlost');
@@ -163,6 +164,23 @@ const handleSubmit = async (e) => {
                                                 />
                                             </div>
                                         </div>
+
+
+                                        <div className="col-12">
+                                            <div className="form-inner">
+                                                <label>Breed </label>
+                                                <input type="text" name="color" placeholder="color pet "
+
+                                                    value={breed}
+                                                    onChange={
+                                                        (event) => {
+                                                            setBreed(event.target.value);
+                                                        }
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+
                                         <div className="col-12">
                                             <div className="form-inner">
                                                 <label>Street Address</label>

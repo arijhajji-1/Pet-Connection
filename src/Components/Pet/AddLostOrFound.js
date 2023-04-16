@@ -81,7 +81,7 @@ const handleDelete = async (id) => {
             formData.append("image", image[i]);
         }
 
-        toast.success('Lost pet added successfully');
+        toast.success('Lost pet added successfully , please wait ');
         const url = 'http://127.0.0.1:3000/pet/addlost'
         axios.post(url, formData).then(data => {
 
