@@ -47,6 +47,20 @@ const Cart = React.lazy(() => import('./Components/MarketPlace/cart'))
 const Details = React.lazy(() => import('./Components/MarketPlace/details'))
 const Checkout = React.lazy(() => import('./Components/MarketPlace/checkout'))
 const Paymenet = React.lazy(() => import('./Components/MarketPlace/payment'))
+// pettttttttttttttttttt
+const AddPet = React.lazy(()=> import ('./Components/Pet/AddPet'))
+const LostAndfound = React.lazy(()=> import ('./Components/Pet/LostAndFound'))
+const AddLostAndfound = React.lazy(()=> import ('./Components/Pet/AddLostOrFound'))
+const LostDetails = React.lazy(()=> import ('./Components/Pet/lostDetail'))
+
+const Comments = React.lazy(()=> import ('./Components/Pet/comments/Comments'))
+
+const Chatbot = React.lazy(()=> import ('./Components/Pet/Chatbot'))
+const Updatelost=React.lazy(()=>import ('./Components/Pet/UpdateLost'))
+const Predict=React.lazy(()=>import ('./Components/Pet/predict'))
+const Gallery=React.lazy(()=>import ('./Components/Pet/Gallery'))
+
+
 import { Elements } from "@stripe/react-stripe-js";
 
 const Event = React.lazy(() => import('./Components/Events/Event'))
@@ -270,6 +284,16 @@ function App() {
                   )}
                   <Route path="/leaderboard" element={<Leaderboard />}></Route>
                   <Route path="*" element={<Home />}></Route>
+
+                  <Route exact path='/addlost' element={< AddLostAndfound/>}></Route>
+                <Route exact path='/listlost' element={< LostAndfound/>}></Route>
+                <Route exact path='/lostdetail/:id' element={< LostDetails/>}></Route>
+                <Route exact path='/lostdetail1/:id' element={< Comments/>}></Route>
+                <Route exact path='/chat' element={< Chatbot/>}></Route>
+                <Route exact path='/updatepet/:id' element={< Updatelost/>}></Route>
+                <Route exact path='/Predict' element={< Predict/>}></Route>
+                <Route exact path='/gallery' element={< Gallery/>}></Route>
+                <Route path='/addpet' element={<AddPet />}></Route> 
                 </Routes>
               </Suspense>
               {/* <Loading /> */}
