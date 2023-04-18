@@ -154,17 +154,17 @@ function App() {
     <div className="App">
 
 
-      {isLoaded ? (
+      {/* {isLoaded ? (
         <div className="loader-container">
 
           <Loading />
         </div>
-      ) : (
+      ) : ( */}
 
         <>
             <div>
               <Suspense fallback={<div></div>}>
-                <ToastContainer/>
+                {/* <ToastContainer/> */}
                 {/* <Cursor
                 showRing={true}
                 color="#000000"
@@ -300,7 +300,7 @@ function App() {
               {/* <Loading /> */}
             </div>
           </>
-      )}
+      {/* )} */}
 
 
     </div >

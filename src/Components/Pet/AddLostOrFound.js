@@ -19,6 +19,7 @@ function Addlostorfound() {
     const userFromLocalStorageString = localStorage.getItem('user');
     const user = userFromLocalStorageString ? JSON.parse(userFromLocalStorageString) : null;
     const [lostPets, setLostPets] = useState([]);
+    const [errors, setErrors] = useState({});
   // Event handler for delete button
 const handleDelete = async (id) => {
     try {
@@ -70,7 +71,28 @@ const handleDelete = async (id) => {
 
         console.log(user)
         event.preventDefault();
+         // Form validation ================================
 
+     const errors = {};
+
+     if (description.trim() === "") {
+         errors.description = "description is required";
+          
+     }
+     if (location === "") {
+        errors.location = "location is required";
+         
+    }
+    if (color.trim() === "") {
+        errors.color = "color is required";
+         
+    }
+    if (type === "") {
+        errors.type = "type is required";
+         
+    }
+    setErrors(errors);
+    if (Object.keys(errors).length === 0){
         const formData = new FormData();
         formData.append("description", description);
         formData.append("location", location);
@@ -95,6 +117,7 @@ const handleDelete = async (id) => {
         }).catch(error => {
             console.error(error);
         });
+    }
     };
 
 
@@ -149,6 +172,8 @@ const handleDelete = async (id) => {
                                                     <option value="found">Found</option>
                                                 </select>
                                             </div>
+                                            {errors.type && <p style={{ fontSize: 12, color: "red" }}>{errors.type}</p>}
+
                                         </div>
 
                                         <div className="col-12">
@@ -161,6 +186,7 @@ const handleDelete = async (id) => {
 
 
                                             </div>
+
                                         </div>
                                         <div className="col-12">
                                             <div className="form-inner">
@@ -175,6 +201,8 @@ const handleDelete = async (id) => {
                                                     }
                                                 />
                                             </div>
+                                            {errors.color && <p style={{ fontSize: 12, color: "red" }}>{errors.color}</p>}
+
                                         </div>
                                         <div className="col-12">
                                             <div className="form-inner">
@@ -211,6 +239,7 @@ const handleDelete = async (id) => {
                                             </div>
                                         </div>
 
+                                        {errors.location && <p style={{ fontSize: 12, color: "red" }}>{errors.location}</p>}
 
                                         <div className="col-12">
                                             <div className="form-inner">
@@ -226,7 +255,9 @@ const handleDelete = async (id) => {
                                                             }
                                                         }
                                                     ></textarea>
-                                                </div>                                            </div>
+                                                </div>
+                                                {errors.description && <p style={{ fontSize: 12, color: "red" }}>{errors.description}</p>}
+                                            </div>
                                         </div>
 
 

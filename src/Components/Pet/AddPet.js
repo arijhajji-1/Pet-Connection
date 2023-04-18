@@ -18,9 +18,9 @@ function AddPet() {
     const [name, setName] = useState("");
     const [images, setImages] = useState([]);
     const [image, setImage] = useState([]);
-    
+    const [errors, setErrors] = useState({});
 
-    
+     
 
     const handleImageChange = (event) => {
         const files = event.target.files;
@@ -55,6 +55,22 @@ function AddPet() {
         console.log(user)
         event.preventDefault();
 
+        // Form validation ================================
+
+     const errors = {};
+
+     if (name.trim() === "") {
+         errors.name = "name is required";
+         console.log("name is required")
+     }
+     if (color.trim() === "") {
+        errors.color = "color is required";
+    }
+    if (!images || images.length === 0) {
+        errors.images = "Image is required";
+      }
+      setErrors(errors);
+      if (Object.keys(errors).length === 0){
         const formData = new FormData();
         formData.append("name", name);
         formData.append("color", color);
@@ -73,6 +89,7 @@ function AddPet() {
         }).catch(error => {
             console.error(error);
         });
+    }
     };
     return (
         <div>
@@ -122,9 +139,12 @@ function AddPet() {
                                                     </select>
                                                 </div>
                                             </div>
+                                          
+
                                             <div className="col-lg-12">
                                                 <div class="form-inner">
                                                     <label>Name</label>
+                                                   
                                                     <input type="text" placeholder="Enter Name"
                                                         value={name}
                                                         onChange={
@@ -133,6 +153,8 @@ function AddPet() {
                                                             }
                                                         }/>
                                                 </div>
+                                                {errors.name && <p style={{ fontSize: 12, color: "red" }}>{errors.name}</p>}
+                                               
                                             <div class="form-inner">
                                                 <label>Color
                                                 </label>
@@ -144,6 +166,17 @@ function AddPet() {
                                                         }
                                                     }/>
                                             </div>
+                                            {
+                                          errors.color && <p style={
+                                                    {
+                                                        fontSize: 12,
+                                                        color: "red"
+                                                    }
+                                                }>
+                                                    {
+                                                    errors.color
+                                                }</p>
+                                            }
                                             <div class="form-inner">
                                         <label>Images:</label>
 
@@ -153,6 +186,17 @@ function AddPet() {
                                         </div>
 
                                     </div>
+                                    {
+                                          errors.images && <p style={
+                                              {
+                                                  fontSize: 12,
+                                                  color: "red"
+                                              }
+                                          }>
+                                              {
+                                              errors.images
+                                          }</p>
+                                      }
                                     <div className="shop-quantity d-flex flex-wrap align-items-center justify-content-start mb-20">
                                         <div className="quantity d-flex align-items-center">
                                             <div className="quantity-nav nice-number d-flex align-items-center"></div>
