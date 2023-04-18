@@ -123,6 +123,7 @@ function App() {
   useScript("./assets/js/jquery.magnific-popup.min.js");
   useScript("./assets/js/masonry.pkgd.min.js");
   useScript("./assets/js/main.js");
+  useScript("./assets/js/chat.js");
 
   const [isLoaded, setIsLoaded] = useState(false);
 

@@ -1,5 +1,5 @@
 import "./chat.css";
-import "./chat.js"
+
 import React, { useState } from "react";
 import axios from "axios";
 
