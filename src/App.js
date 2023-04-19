@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-
+import EmotionPrediction from "./Components/Pages/Rewards/EmotionPrediction";
 import { useScript } from 'usehooks-ts'
 
 import { loadStripe } from "@stripe/stripe-js";
@@ -164,7 +164,7 @@ function App() {
         <>
             <div>
               <Suspense fallback={<div></div>}>
-                {/* <ToastContainer/> */}
+                <ToastContainer/>
                 {/* <Cursor
                 showRing={true}
                 color="#000000"
@@ -238,7 +238,7 @@ function App() {
 
 
 
-
+                  <Route exact path='/emotion' element={<EmotionPrediction/>}></Route>
                   <Route path="/ForgetPwd" element={<ForgetPwd />}></Route>
                   <Route path="/resetPwd/:t" element={<ResetPwd />}></Route>
                   <Route
