@@ -43,7 +43,9 @@ const CreateEvent = ({ onClose, onUpdate }) => {
   const classes = useStyles();
   const [imageUrl, setImageUrl] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-
+  const [error, setError] = useState(null);
+  const [disabled, setDisabled] = useState(false);
+  
   useEffect(() => {
     const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
     setUser(userFromLocalStorage);
@@ -233,15 +235,30 @@ const CreateEvent = ({ onClose, onUpdate }) => {
               <Input id="event-description" multiline rows={3} onChange={(event) => setDescription(event.target.value)} />
             </FormControl>
           </Form.Group>
-    
           <Form.Group controlId="formDate" className="mb-3">
-            <div className="form-icon">
-              <FontAwesomeIcon icon={faCalendarAlt} />
-            </div>
-            <FormControl fullWidth>
-              <Input id="event-date" type="datetime-local" onChange={(event) => setDate(event.target.value)} />
-            </FormControl>
-          </Form.Group>
+  <div className="form-icon">
+    <FontAwesomeIcon icon={faCalendarAlt} />
+  </div>
+  <FormControl fullWidth>
+    <Input id="event-date" type="datetime-local" onChange={(event) => {
+      const inputDate = new Date(event.target.value);
+      const currentDate = new Date();
+      if (isNaN(inputDate.getTime()) || inputDate < currentDate) {
+        // If the entered date is not a valid date or is in the past
+        // show an error message and disable the submit button
+        setError("Invalid date");
+        setDisabled(true);
+      } else {
+        // If the entered date is valid, clear the error message and enable the submit button
+        setError("");
+        setDisabled(false);
+        setDate(inputDate);
+      }
+    }} />
+  </FormControl>
+  {error && <Form.Text className="text-danger">{error}</Form.Text>}
+</Form.Group>
+
     
           <Form.Group controlId="formLocation" className="mb-3">
             <div className="form-icon">

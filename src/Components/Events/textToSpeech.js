@@ -7,14 +7,13 @@ async function textToSpeech(text) {
       url: 'https://text-to-speech-api3.p.rapidapi.com/speak',
       params: {
         text: text,
-        lang: 'en-US',
-        voice: 'en-US-Wavenet-D',
-        speed: '1.0'
+        lang: 'en',
+        speed: 'normal',
+        voice: 'mp3-normal'
       },
       headers: {
-        'x-rapidapi-host': 'text-to-speech-api3.p.rapidapi.com',
         'X-RapidAPI-Key': '1179f3b153msh6098dabc7917d65p160579jsnf2656b48ce7a',
-        'useQueryString': true
+        'X-RapidAPI-Host': 'text-to-speech-api3.p.rapidapi.com'
       },
       responseType: 'arraybuffer'
     });

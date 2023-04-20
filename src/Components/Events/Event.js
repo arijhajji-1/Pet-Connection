@@ -86,6 +86,7 @@ function EventList() {
     setIsModalOpen(false);
   };
   const baseUrl = "http://localhost:3000/uploads/"; // Replace with your base URL
+  const url ="http://localhost:3000/public/uploads/";
 
   const handleDelete = async (id) => {
     console.log(id); // add this line to check the value of id
@@ -189,14 +190,14 @@ function EventList() {
         <div className="col-lg-4 mb-4" key={event._id}>
           <Card sx={{ maxWidth: 345 }}>
           <CardHeader
-        avatar={
-<Avatar
-  aria-label="avatar"
-  image={`${baseUrl}${event.organizerPic}`}
-  title={event.organizer}
-/>
-
-        }
+       avatar={
+        event.organizerPic && 
+        <Avatar
+          aria-label="avatar"
+          image={`${url}${event.organizerPic}`}
+          title={event.organizer}
+        />
+      }
         action={
           <div>
            {user && event.organizer === user.username && (

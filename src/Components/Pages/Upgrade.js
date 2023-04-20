@@ -1,23 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Form, Button } from "react-bootstrap"; 
-import { useNavigate } from "react-router-dom";
-import { NavLink, Routes, Route } from "react-router-dom";
-import jwt_decode from "jwt-decode";
-import FacebookLogin from "react-facebook-login";
-import axios from "axios"; 
-import { useDispatch } from "react-redux";
-import ReCAPTCHA from "react-google-recaptcha";
+import React, { useEffect, useState } from "react"; 
+import { toast } from "react-toastify"; 
 
 function Upgrade() {
 
     const [role, setRole] = useState("");
     const [image, setImage] = useState("");
     const [type, setType] = useState("");
-    console.log(image); 
+     
     
 
     function handleSubmit() {
-          
+        const verify = { 'role': role, 'image': image, 'type': type };
     }
   return (
     <>
@@ -33,7 +26,7 @@ function Upgrade() {
                 >
                   <div className="form-title">
 
-                    <h3>Upgrade Account</h3>
+                    <h3>Upgrade Accounts</h3>
                     <p>
                       Are you a veterinarian or an association? Verify your
                       account now.
