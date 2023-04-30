@@ -1,9 +1,12 @@
+
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { getEvent, updateEvent } from "./Services";
+import { useNavigate } from "react-router-dom";
 
 function UpdateEvent() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const userId = JSON.parse(localStorage.getItem("user"));
   let connectedUserId;
@@ -55,6 +58,8 @@ function UpdateEvent() {
     formData.append('organizer', connectedUserId);
     try {
       await updateEvent(id, formData);
+      alert("event updated");
+      navigate("/Event");
     } catch (err) {
       console.error(err);
     }

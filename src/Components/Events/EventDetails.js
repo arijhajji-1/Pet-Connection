@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import "./style.css";
 import "./comment.css";
+import textToSpeech from './textToSpeech';
 
 import { format } from "date-fns";
 
@@ -50,6 +51,38 @@ const [isEditing,setIsEditing] = useState(false);
  const [translatedDescription, setTranslatedDescription] = useState('');
  const [showSelect, setShowSelect] = useState(false);
  const [showDropdown, setShowDropdown] = useState(false);
+ const [audioData, setAudioData] = useState(null);
+ const [isPlaying, setIsPlaying] = useState(false);
+ const [loading, setLoading] = useState(false);
+
+ const generateAudio = async () => {
+   setLoading(true);
+   setError(null);
+   try {
+     const audioData = await textToSpeech(event.description);
+     setAudioData(audioData);
+   } catch (error) {
+     setError(error.message);
+   }
+   setLoading(false);
+ };
+ 
+ const handlePlay = () => {
+   if (audioData) {
+     const blob = new Blob([audioData], { type: 'audio/mp3' });
+     const audio = new Audio();
+     audio.src = URL.createObjectURL(blob);
+     audio.play();
+   } else {
+     setError('Audio data not available.');
+   }
+ };
+ 
+ useEffect(() => {
+   generateAudio();
+ }, [event.description]);
+
+
 
  async function handleTranslate() {
   const result = await translateText(event.description, targetLanguage);
@@ -688,6 +721,23 @@ function handleClicks() {
           </button>
         </div>
       )}
+    
+    {loading ? (
+      <div>Loading audio...</div>
+    ) : error ? (
+      <div>Error: {error}</div>
+    ) : (
+      <div>
+        
+        <br />
+        <audio controls>
+          <source src={audioData ? URL.createObjectURL(new Blob([audioData], { type: 'audio/mp3' })) : null} type="audio/mp3" />
+        </audio>
+        <br />
+        
+      </div>
+    )}
+
       
  
 

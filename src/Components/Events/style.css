@@ -553,3 +553,55 @@ textarea.form-input {
   opacity: 1;
   top: -160%;
 }
+  audio {
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    outline: none;
+  }
+
+  audio::-webkit-media-controls-panel {
+    border-radius: 10px;
+  }
+
+  audio::-webkit-media-controls-play-button {
+    display: initial;
+  }
+  
+
+  audio::-webkit-media-controls-start-playback-button {
+    display: none;
+  }
+
+  audio::-webkit-media-controls-current-time-display {
+    font-size: 14px;
+    color: #333;
+    margin-right: 10px;
+  }
+
+  audio::-webkit-media-controls-time-remaining-display {
+    font-size: 14px;
+    color: #333;
+    margin-left: 10px;
+  }
+
+  audio::-webkit-media-controls-mute-button {
+    display: none;
+  }
+
+  audio::-webkit-media-controls-volume-slider {
+    display: none;
+  }
+
+  audio::-webkit-media-controls-volume-slider-container {
+    display: none;
+  }
+
+  audio::-webkit-media-controls-seek-back-button {
+    display: none;
+  }
+
+  audio::-webkit-media-controls-seek-forward-button {
+    display: none;
+  }

@@ -1,0 +1,177 @@
+/* .btn {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+} */
+
+
+
+.btn {
+  
+  border: none; 
+
+}
+
+.btn:hover {    
+  transform: translateY(-5px);
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn i {
+  transition: all 0.3s ease-in-out;
+}
+
+.btn:hover i {
+  animation: thumb-up 0.3s linear infinite;
+}
+
+@keyframes thumb-up {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+
+
+
+
+
+
+
+/*  */
+.imagedetals {
+    width: 1200px !important;
+    height: 500px !important;
+    object-fit: cover;
+    max-width: 100%;
+    height: auto;
+  }
+
+
+  
+  .newestImage {
+    width: 90px !important;
+    height: 90px !important;
+    object-fit: cover;
+    max-width: 100%;
+    height: auto;
+  }
+
+
+  .imagePublication {
+    width: 370px !important;
+    height: 200px !important;
+    object-fit: cover;
+    max-width: 100%;
+    height: auto;
+  }
+
+
+  .rounded-circle {
+    width: 60px; /* ajustez la taille selon vos besoins */
+    height: 60px;
+    object-fit: cover; /* redimensionne l'image pour s'adapter à la forme de cercle */
+    border-radius: 50%;
+  
+  }
+
+
+
+
+  .reset-btn1 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #fff;
+    font-family: var(--font-dosis);
+    border-radius: 40px;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    background: var(--title-color1);
+    z-index: 1;
+    padding: 0px 10px;
+    margin-left: 10px;
+  }
+  .reset-btn1::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background:  #808080;
+    z-index: -1;
+    transition: 0.6s;
+    transform-origin: left;
+  }
+  .reset-btn1:hover {
+    color: #FFF;
+  }
+  .reset-btn1:hover::before {
+    width: 0;
+  }
+
+
+  .comment-popup-close {
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    font-size: 1.5rem;
+  }
+
+
+  .add-btn{
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #fff;
+    font-family: var(--font-dosis);
+    border-radius: 40px;
+    /* display: inline-block; */
+    /* position: relative; */
+    /* overflow: hidden; */
+    z-index: 1;
+    padding: 0px 10px;
+    margin-left: 10px;
+
+
+
+  }
+
+
+
+  /* animation */
+
+
+  .mic-icon {
+    font-size: 1.5rem;
+  }
+  
+  .animate {
+    animation: pulse 1s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+
+
