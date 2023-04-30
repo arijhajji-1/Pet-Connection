@@ -41,7 +41,6 @@ function RewardsList() {
           name: "Pet Emotions",
           level: "9",
           locked: user.level < 9 ? "gray" : "#F3E8F5",
-          link:user.level>9 ? "/emotion" : "/RewardsList",
         },
       ]);
   }, []);

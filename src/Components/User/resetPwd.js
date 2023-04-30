@@ -13,21 +13,22 @@ function ResetPwd() {
   
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState("");
-    const {token}= useParams();
-
+    const pathname = window.location.pathname
+    var tok = pathname.split('/').pop();
+    const {yosra}= useParams();
+    
+    console.log(tok);
 
     const newPwd = async () =>{
-     await axios.put('http://localhost:3000/user/resetpassword', {token,password})
-      // await axios.put('http://localhost:3000/user/resetpassword', {password}, {
-      //         headers: {Authorization: token}
-      //     })
-      history.push('/login');
-      window.location.reload();
+     await axios.put('http://localhost:3000/user/resetpassword', {password}, {
+                headers: {Authorization: token}
+            })
 
     }
 
     
     const navigate = useNavigate(); 
+    const { token } = useParams();
     const sendLink = async (e) => {
       console.log(token)
       resetPassword();
@@ -119,7 +120,7 @@ function ResetPwd() {
                       
                     </div>
                     {message ? <p style={{ color: "green", fontWeight: "bold" }}>pasword Succsfully Updated</p> : ""}
-                    {/* <form class="w-100" > */}
+                    <form class="w-100" >
                       <div class="row">
                         <div class="col-12">
                           <div class="form-inner">
@@ -133,12 +134,12 @@ function ResetPwd() {
                           </div>
                         </div>
                       </div>
-                      <button className="account-btn"onClick={()=> newPwd() }>
+                      <button className="account-btn">
                         {" "}
                         <i className="fa fa-paw" ></i>
-                        &nbsp;Send
+                        &nbsp;Hiba
                       </button>
-                    {/* </form> */}
+                    </form>
                    
                   
                   </div>
