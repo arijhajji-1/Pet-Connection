@@ -7,7 +7,6 @@ import { useScript } from 'usehooks-ts'
 import Loading from "./Components/Pages/Loading";
 import TwoFa from "./Components/User/TwoFa";
 //import TwoFactorVerification from "./Components/User/TwoFactorVerification";
-
 import { Cursor } from 'custom-pointer-react'
 import Association from "./Components/Pages/Association/Association";
 import Crowdfunding from "./Components/Pages/Crowdfunding/Crowdfunding";
@@ -44,6 +43,7 @@ const PetAvatar = React.lazy(() =>
 const EventDetails = React.lazy(()=> import ('./Components/Events/EventDetails'))
 const UpdateEvent = React.lazy(()=> import ('./Components/Events/UpdateEvent'))
 const CreateEvent = React.lazy(()=>import ('./Components/Events/CreateEvent'))
+const Meet = React.lazy(() => import("./Components/Pages/Meet/Meet"));
 
 //const Upgrade = React.lazy(() => import("./Components/Pages/Upgrade"));
 
@@ -113,7 +113,9 @@ function App() {
               <Routes>
                 <Route path="/shop" element={<Market />}></Route>
                 <Route path="/About" element={<About />}></Route>
-                {user == null && <Route path="/Login" element={<Login />}></Route>}
+                {user == null && (
+                  <Route path="/Login" element={<Login />}></Route>
+                )}
                 {user == null && (
                   <Route path="/Register" element={<Register />}></Route>
                 )}
@@ -130,9 +132,9 @@ function App() {
                   ></Route>
                 )}
                 {user &&
-                  JSON.parse(localStorage.getItem("user"))["twoFactorEnabled"] && (
-                    <Route path="/2faverify" element={<TwoFa />} />
-                  )}{" "}
+                  JSON.parse(localStorage.getItem("user"))[
+                    "twoFactorEnabled"
+                  ] && <Route path="/2faverify" element={<TwoFa />} />}{" "}
                 {user && <Route path="/profile" element={<Profile />}></Route>}
                 <Route path="/ForgetPwd" element={<ForgetPwd />}></Route>
                 <Route path="/resetPwd/:t" element={<ResetPwd />}></Route>
@@ -142,9 +144,18 @@ function App() {
                   element={<ResetPwd />}
                 ></Route>
                 <Route path="/About" element={<About />}></Route>
-                <Route path="/associations" element={<AssociationList />}></Route>
-                <Route path="/association/:id" element={<Association />}></Route>
-                <Route path="/crowdfunding/:id" element={<Crowdfunding />}></Route>
+                <Route
+                  path="/associations"
+                  element={<AssociationList />}
+                ></Route>
+                <Route
+                  path="/association/:id"
+                  element={<Association />}
+                ></Route>
+                <Route
+                  path="/crowdfunding/:id"
+                  element={<Crowdfunding />}
+                ></Route>
                 {user && (
                   <>
                     <Route
@@ -167,7 +178,10 @@ function App() {
                       element={<AddCrowdfunding />}
                     ></Route>
 
-                    <Route path="/RewardsList" element={<RewardsList />}></Route>
+                    <Route
+                      path="/RewardsList"
+                      element={<RewardsList />}
+                    ></Route>
                     <Route path="/petavatar" element={<PetAvatar />}></Route>
 
                     {role == "admin" && (
@@ -179,6 +193,7 @@ function App() {
                   </>
                 )}
                 <Route path="/leaderboard" element={<Leaderboard />}></Route>
+                <Route path="/meet" element={<Meet />}></Route>
                 <Route path="*" element={<Home />}></Route>
               </Routes>
             </Suspense>
@@ -187,7 +202,6 @@ function App() {
         </>
       )}
     </div>
- 
   );
 }
 export default App;

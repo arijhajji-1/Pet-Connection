@@ -93,7 +93,10 @@ function Header() {
                 <li>
                   <NavLink to="/associations">Association</NavLink>
                 </li>
-
+                
+                <li>
+                  <NavLink to="/meet">Meet</NavLink>
+                </li>
 
                 {/* <li>
                   <NavLink to="/associations">Association</NavLink>
