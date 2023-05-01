@@ -92,7 +92,7 @@ const AddPublication = React.lazy(() => import("./Components/Blog/AddPublication
 const UpdatePublication = React.lazy(() => import("./Components/Blog/UpdatePublication"));
 
 
-
+const ChatDM = React.lazy(() => import("./Components/Pet/chatDM"));
 
 
 
@@ -172,7 +172,7 @@ function App() {
                 cursorSize={10}
                 ringBorder={2}
               /> */}
-                <Header />
+                {/* <Header /> */}
                 <Routes>
                   {/* <Route path="/shop" element={<Market />}></Route> */}
                   <Route path="/About" element={<About />}></Route>
@@ -295,6 +295,11 @@ function App() {
                 <Route exact path='/Predict' element={< Predict/>}></Route>
                 <Route exact path='/gallery' element={< Gallery/>}></Route>
                 <Route path='/addpet' element={<AddPet />}></Route> 
+
+
+
+
+                <Route path='/chatDM' element={<ChatDM />}></Route> 
                 </Routes>
               </Suspense>
               {/* <Loading /> */}
