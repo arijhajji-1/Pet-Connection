@@ -74,10 +74,14 @@ function Header() {
                     Lost and found
                   </NavLink>
                 </li>
-                <li>
+                <li className="menu-item-has-children">
+                <i class="bi bi-plus dropdown-icon"></i>
                   <NavLink to="/Event">Events</NavLink>
+                  <ul className="sub-menu">
+                   <li> <NavLink to="/podcasts">Podcast</NavLink></li>
+                  </ul>
                 </li>
- 
+        
                 <li>
                   <a href="#">Blog</a>
                 </li>
