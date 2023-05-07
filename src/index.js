@@ -13,7 +13,7 @@ import 'antd/dist/reset.css';
 import { MouseContextProvider } from 'custom-pointer-react'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mui/material/styles';
-
+import {ContextProvider} from '../src/Components/Pages/Meet/Context'; 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
@@ -21,14 +21,14 @@ root.render(
     <BrowserRouter>
     <Provider store={store}>
     <MouseContextProvider>
-
-        <App />
+        <ContextProvider>
+            <App />
+        </ContextProvider>
         </MouseContextProvider>
       </Provider>
 
     </BrowserRouter>
   </React.StrictMode>
-
 );
 
 // If you want to start measuring performance in your app, pass a function
