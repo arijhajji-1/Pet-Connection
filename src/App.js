@@ -25,13 +25,40 @@ const Footer = React.lazy(() => import('./Components/Pages/Footer'))
 const Market = React.lazy(()=> import ('./Components/Pages/Market'))
 const About = React.lazy(() => import('./Components/Pages/About'))
 const Login = React.lazy(() => import('./Components/User/login'))
-const Register = React.lazy(()=> import ('./Components/User/register'))
-const EnableTwoFactorAuth = React.lazy(()=> import('./Components/User/EnableTwoFactorAuth'))
-const DisableTwoFactorAuth = React.lazy(()=> import('./Components/User/DisableTwoFactorAuth'))
-const Event = React.lazy(()=> import ('./Components/Events/Event'))
-const ForgetPwd = React.lazy(()=> import ('./Components/User/forgetPwd'))
-const ResetPwd = React.lazy(()=> import ('./Components/User/resetPwd'))
-const Profile = React.lazy(()=> import ('./Components/User/Profile'))
+const Register = React.lazy(() => import('./Components/User/register'))
+const EnableTwoFactorAuth = React.lazy(() => import('./Components/User/EnableTwoFactorAuth'))
+const DisableTwoFactorAuth = React.lazy(() => import('./Components/User/DisableTwoFactorAuth'))
+
+
+const Shop = React.lazy(() => import('./Components/MarketPlace/shop'))
+const Cart = React.lazy(() => import('./Components/MarketPlace/cart'))
+
+const Details = React.lazy(() => import('./Components/MarketPlace/details'))
+const Checkout = React.lazy(() => import('./Components/MarketPlace/checkout'))
+const Paymenet = React.lazy(() => import('./Components/MarketPlace/payment'))
+// pettttttttttttttttttt
+const AddPet = React.lazy(()=> import ('./Components/Pet/AddPet'))
+const LostAndfound = React.lazy(()=> import ('./Components/Pet/LostAndFound'))
+const AddLostAndfound = React.lazy(()=> import ('./Components/Pet/AddLostOrFound'))
+const LostDetails = React.lazy(()=> import ('./Components/Pet/lostDetail'))
+
+const Comments = React.lazy(()=> import ('./Components/Pet/comments/Comments'))
+
+const Chatbot = React.lazy(()=> import ('./Components/Pet/Chatbot'))
+const Updatelost=React.lazy(()=>import ('./Components/Pet/UpdateLost'))
+const Predict=React.lazy(()=>import ('./Components/Pet/predict'))
+const Gallery=React.lazy(()=>import ('./Components/Pet/Gallery'))
+
+
+import { Elements } from "@stripe/react-stripe-js";
+import AddPodcast from "./Components/Podcasts/AddPodcast";
+import PodcastList from "./Components/Podcasts/PodcastList";
+import DetailsPodcast from "./Components/Podcasts/DetailsPodcast";
+
+const Event = React.lazy(() => import('./Components/Events/Event'))
+const ForgetPwd = React.lazy(() => import('./Components/User/forgetPwd'))
+const ResetPwd = React.lazy(() => import('./Components/User/resetPwd'))
+const Profile = React.lazy(() => import('./Components/User/Profile'))
 const Upgrade = React.lazy(() => import("./Components/Pages/Association/Upgrade"));
 const AssociationList = React.lazy(() => import("./Components/Pages/Association/AssociationList"));
 const PetAvatar = React.lazy(() =>
@@ -108,18 +135,80 @@ function App() {
                 ringSize={50}
                 cursorSize={10}
                 ringBorder={2}
-              />
-              <Header />
-              <Routes>
-                <Route path="/shop" element={<Market />}></Route>
-                <Route path="/About" element={<About />}></Route>
-                {user == null && (
-                  <Route path="/Login" element={<Login />}></Route>
-                )}
-                {user == null && (
-                  <Route path="/Register" element={<Register />}></Route>
-                )}
-                {user && (
+              /> */}
+                <Header />
+                <Routes>
+                  {/* <Route path="/shop" element={<Market />}></Route> */}
+                  <Route path="/About" element={<About />}></Route>
+                  <Route path="/Event" element={<Event />}></Route>
+                  <Route path="/EventDetails/:id" element={<EventDetails />}></Route>
+                  <Route path="/DetailsPodcast/:id" element={<DetailsPodcast/>}></Route>
+                  <Route path="/UpdateEvent/:id" element={<UpdateEvent />}></Route>
+                  <Route path="/addEvent" element={<CreateEvent />}></Route>
+                  <Route exact path='/shop' element={<Shop />}></Route>
+                  <Route exact path='/cart/' element={<Cart />}></Route>
+                  <Route exact path='/details' element={<Details />}></Route>
+                  <Route exact path='/checkout' element={<Checkout />}></Route>
+                  <Route exact path='/podcast' element={<AddPodcast/>}></Route>
+                  <Route exact path='/podcasts' element={<PodcastList/>}></Route>
+                  
+                  <Route exact path='/payment' element={
+                    <Elements stripe={promise}>
+                      <Paymenet />
+                    </Elements>
+                  }></Route>
+                  {user == null && <Route path="/Login" element={<Login />}></Route>}
+                  {user == null && (
+                    <Route path="/Register" element={<Register />}></Route>
+                  )}
+                  {user && (
+                    <Route
+                      path="/2faenable"
+                      element={<EnableTwoFactorAuth />}
+                    ></Route>
+                  )}
+                  {user && (
+                    <Route
+                      path="/2fadisable"
+                      element={<DisableTwoFactorAuth />}
+                    ></Route>
+                  )}
+                  {user &&
+                    JSON.parse(localStorage.getItem("user"))["twoFactorEnabled"] && (
+                      <Route path="/2faverify" element={<TwoFa />} />
+                    )}{" "}
+
+
+
+
+
+
+
+                  {user && <Route path="/profile" element={<Profile />}></Route>}
+
+                  <Route path="/publications" element={<Publications />}></Route>
+
+                  <Route path="/detalsPublications/:idpub" element={<DetailsPublications />}></Route>
+
+                  <Route path="/AddPublication" element={<AddPublication />}></Route>
+
+                  <Route path="/UpdatePublication/:idpub" element={<UpdatePublication />}></Route>
+
+
+
+
+                  {/* <Route path="/PublicationComponent" element={<PublicationComponent />}></Route> */}
+
+
+
+
+
+
+
+
+                  <Route exact path='/emotion' element={<EmotionPrediction/>}></Route>
+                  <Route path="/ForgetPwd" element={<ForgetPwd />}></Route>
+                  <Route path="/resetPwd/:t" element={<ResetPwd />}></Route>
                   <Route
                     path="/2faenable"
                     element={<EnableTwoFactorAuth />}
