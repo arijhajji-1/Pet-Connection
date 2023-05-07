@@ -14,7 +14,6 @@ const PodcastList = () => {
   const [podcasts, setPodcasts] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState(null);
   useEffect(() => {
     const fetchPodcasts = async () => {
       const response = await axios.get('http://localhost:3000/podcast/podcast');
@@ -34,24 +33,20 @@ const PodcastList = () => {
 
   const handleDeletePodcast = async (podcastId) => {
     try {
-      await axios.delete(`http://localhost:3000/podcast/deletepodcast/${podcastId}`);
-      setPodcasts(podcasts.filter((podcast) => podcast._id !== podcastId));
+      const response = await axios.delete(`http://localhost:3000/podcast/deletepodcast/${podcastId}`);
+      if (response.status === 200) {
+        setPodcasts(podcasts.filter(podcast => podcast._id !== podcastId));
+      } else {
+        throw new Error('Unable to delete podcast');
+      }
     } catch (error) {
       console.log(error);
+      // Display an error message to the user
+      alert('Unable to delete podcast');
     }
   };
   
-  const handleOpenMenu = (e, event) => {
-    setAnchorEl(e.currentTarget);
-    setCurrentEvent(event);
-    console.log(e)
-    console.log(event)
-  };
 
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-    setCurrentEvent(null);
-  };
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -127,13 +122,15 @@ const PodcastList = () => {
 
   ));
   const updatePodcastList = async () => {
-    try {
-      const res = await getPodcast();
-      setEvents(res.data);
-    } catch (err) {
-
-      console.error(err);
-    }
+    const response = await axios.get('http://localhost:3000/podcast/podcast');
+    const podcasts = await Promise.all(
+      response.data.map(async (podcast) => {
+        const audioResponse = await axios.get(`http://localhost:3000/${podcast.audio}`, { responseType: 'blob' });
+        const blob = new Blob([audioResponse.data], { type: 'audio/mp3' });
+        return { ...podcast, audioBlob: blob };
+      })
+    );
+    setPodcasts(podcasts);
   };
   return (
     <>
