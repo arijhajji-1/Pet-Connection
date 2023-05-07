@@ -7,9 +7,9 @@ const initialState = {
     qrCode: null,
     isQrCodeVerified: false
   };
-  
+
   const reducer = (state = initialState, action) => {
-    switch (action.type) {
+   switch (action.type) {
       case 'LOGIN_SUCCESS':
         return {
           ...state,
@@ -57,3 +57,5 @@ const initialState = {
 const store = createStore(reducer, applyMiddleware(thunk));
 
 export default store;
+
+

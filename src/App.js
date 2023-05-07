@@ -32,6 +32,8 @@ const DisableTwoFactorAuth = React.lazy(() => import('./Components/User/DisableT
 
 const Shop = React.lazy(() => import('./Components/MarketPlace/shop'))
 const Cart = React.lazy(() => import('./Components/MarketPlace/cart'))
+const Woah=React.lazy(()=>import("./Components/MarketPlace/woah"));
+const Scrap=React.lazy(()=>import("./Components/MarketPlace/scrape"));
 
 const Details = React.lazy(() => import('./Components/MarketPlace/details'))
 const Checkout = React.lazy(() => import('./Components/MarketPlace/checkout'))
@@ -129,13 +131,7 @@ function App() {
         <>
           <div>
             <Suspense fallback={<div></div>}>
-              <Cursor
-                showRing={true}
-                color="#000000"
-                ringSize={50}
-                cursorSize={10}
-                ringBorder={2}
-              /> */}
+            
                 <Header />
                 <Routes>
                   {/* <Route path="/shop" element={<Market />}></Route> */}
@@ -157,6 +153,10 @@ function App() {
                       <Paymenet />
                     </Elements>
                   }></Route>
+
+                <Route exact path='/woah' element={<Woah />}></Route>
+                <Route exact path='/scrap' element={<Scrap />}></Route>
+                          
                   {user == null && <Route path="/Login" element={<Login />}></Route>}
                   {user == null && (
                     <Route path="/Register" element={<Register />}></Route>
@@ -209,11 +209,10 @@ function App() {
                   <Route exact path='/emotion' element={<EmotionPrediction/>}></Route>
                   <Route path="/ForgetPwd" element={<ForgetPwd />}></Route>
                   <Route path="/resetPwd/:t" element={<ResetPwd />}></Route>
-                  <Route
+                  {user &&(<Route
                     path="/2faenable"
                     element={<EnableTwoFactorAuth />}
-                  ></Route>
-                )}
+                  ></Route>)}
                 {user && (
                   <Route
                     path="/2fadisable"
