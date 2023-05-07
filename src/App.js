@@ -64,6 +64,7 @@ const Gallery=React.lazy(()=>import ('./Components/Pet/Gallery'))
 import { Elements } from "@stripe/react-stripe-js";
 import AddPodcast from "./Components/Podcasts/AddPodcast";
 import PodcastList from "./Components/Podcasts/PodcastList";
+import DetailsPodcast from "./Components/Podcasts/DetailsPodcast";
 
 const Event = React.lazy(() => import('./Components/Events/Event'))
 const ForgetPwd = React.lazy(() => import('./Components/User/forgetPwd'))
@@ -180,6 +181,7 @@ function App() {
                   <Route path="/About" element={<About />}></Route>
                   <Route path="/Event" element={<Event />}></Route>
                   <Route path="/EventDetails/:id" element={<EventDetails />}></Route>
+                  <Route path="/DetailsPodcast/:id" element={<DetailsPodcast/>}></Route>
                   <Route path="/UpdateEvent/:id" element={<UpdateEvent />}></Route>
                   <Route path="/addEvent" element={<CreateEvent />}></Route>
                   <Route exact path='/shop' element={<Shop />}></Route>
