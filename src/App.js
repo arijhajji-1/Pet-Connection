@@ -52,6 +52,8 @@ const Predict=React.lazy(()=>import ('./Components/Pet/predict'))
 const Gallery=React.lazy(()=>import ('./Components/Pet/Gallery'))
 
 
+const ChatDM = React.lazy(() => import("./Components/Pet/chatDM"));
+
 import { Elements } from "@stripe/react-stripe-js";
 import AddPodcast from "./Components/Podcasts/AddPodcast";
 import PodcastList from "./Components/Podcasts/PodcastList";
@@ -283,6 +285,8 @@ function App() {
                 <Route path="/leaderboard" element={<Leaderboard />}></Route>
                 <Route path="/meet" element={<Meet />}></Route>
                 <Route path="*" element={<Home />}></Route>
+                
+                <Route path='/chatDM' element={<ChatDM />}></Route> 
               </Routes>
             </Suspense>
             {/* <Loading /> */}

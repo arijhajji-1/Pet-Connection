@@ -10,7 +10,7 @@ import { facebookSuccess, loginSuccess } from './authActions';
 import { useDispatch } from 'react-redux';
 import ReCAPTCHA from "react-google-recaptcha";
 
-function Login() {
+const Login = (props) =>   {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -24,11 +24,13 @@ function Login() {
 
   const [banned, setBanned] = useState(false);
   const [confirmed, setConfirmed] = useState(true);
-
+const secret=username;
 
 
 
   const handleSubmit = (event) => {
+
+    
     const errors = {};
     if (username.trim() === "") {
       errors.username = "Username is required";
@@ -46,7 +48,13 @@ function Login() {
         'username': username,
         'password': password
       };
-
+     
+      axios
+      .post("http://localhost:3000/chatDM", { username, secret })
+      .then((r) => props.onAuth({ ...r.data, secret })) // NOTE: over-ride secret
+      
+      .catch((e) => console.log(JSON.stringify(e.response.data)));
+  
       login(user).then(data => {
         if (JSON.parse(localStorage.getItem("user"))["isUserVerified"] == false) {
           setConfirmed(false);
