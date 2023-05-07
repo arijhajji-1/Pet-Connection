@@ -3,31 +3,20 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import {MdOutlineLogout} from "react-icons/md";
 
-import { useLocation } from 'react-router-dom';
 
 
 function Header() {
-  const [user, setUser] = useState(localStorage.getItem("user")); 
 
+  const [user, setUser] = useState(localStorage.getItem("user"));
   useEffect(() => {
     setUser(localStorage.getItem("user"));
   }, [user]);
-
- 
-
   const logout = () => {
     localStorage.removeItem("user");
     window.location.reload();
   };
-  const location = useLocation();
 
-  if (
-    location.pathname === "/Login" ||
-    location.pathname === "/Register" ||
-    location.pathname == "/2faverify"
-  ) {
-    return <></>;
-  } else
+
     return (
       <div>
         <header className="header-area style-2">
@@ -47,15 +36,8 @@ function Header() {
               <div className="mobile-logo-area d-lg-none d-flex justify-content-between align-items-center">
                 <div className="mobile-logo-wrap">
                   <a href="index.html">
-
-                  <img
-                  alt="image"
-                  className="img-fluid"
-                  src="/assets/images/logo-01.png"
-                  height={50}
-                  width={50}
-                />                  </a>
-
+                    <img alt="image" src="/assets/images/header2-logo.svg" />
+                  </a>
                 </div>
                 <div className="menu-close-btn">
                   <i className="bi bi-x-lg" />
@@ -67,12 +49,13 @@ function Header() {
                   <NavLink to="/home" className="drop-down ">
                     Home
                   </NavLink>
+                  
                 </li>
                 <li>
                   <NavLink to="/About">About</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/Event">Events</NavLink>
+                  <a href="#">Services</a>
                 </li>
 
                 <li>
@@ -84,26 +67,23 @@ function Header() {
                 <li>
                   <a href="contact.html">Contact</a>
                 </li>
+                
+                
 
-
-                {user && (
-                  <li>
-                    <NavLink to="/profile">profile</NavLink>
-                  </li>
-                )}
-
-                <li>
-                  <NavLink to="/associations">Association</NavLink>
+                <li className="menu-item-has-children">
+                <i class="bi bi-plus dropdown-icon"></i>
+                  <NavLink to="/woah">WOAH</NavLink>
+                  <ul className="sub-menu">
+                   <li> <NavLink to="/scrap">Advice&welfare</NavLink></li>
+                  </ul>
                 </li>
-
-
-                {/* <li>
-                  <NavLink to="/associations">Association</NavLink>
-                </li> */}
-
                 {/* <Link to="About">Contact</Link> */}
               </ul>
 
+
+
+
+              
               <div className="for-mobile-menu d-lg-none d-block">
                 <div className="hotline mb-5">
                   <div className="hotline-info">
@@ -236,15 +216,7 @@ function Header() {
                   </NavLink>
                 </li>
 
-
-                <li>
-                  {user && (
-                    <button onClick={logout} height={15} width={15}>
-                      <MdOutlineLogout />
-                    </button>
-                  )}
-                </li>
-
+                <li>{user && <button  onClick={logout} height={15} width={15}><MdOutlineLogout/></button>}</li>
               </ul>
               <div className="hotline-info">
                 <span>Call Us Now</span>

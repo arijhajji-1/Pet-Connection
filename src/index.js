@@ -6,27 +6,16 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from "react-redux";
 import store from './redux/store';
-
-
-import { MouseContextProvider } from 'custom-pointer-react'
-import 'mapbox-gl/dist/mapbox-gl.css';
-import '@mui/material/styles';
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-    <Provider store={store}>
-    <MouseContextProvider>
-
-        <App />
-        </MouseContextProvider>
-      </Provider>
-
-    </BrowserRouter>
-  </React.StrictMode>
-
+ 
+      <BrowserRouter>
+          <Provider store={store}>
+              <App />
+          </Provider>
+      </BrowserRouter>
+  
 );
 
 // If you want to start measuring performance in your app, pass a function
