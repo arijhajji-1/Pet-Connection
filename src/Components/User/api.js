@@ -78,3 +78,52 @@ export const resetPassword = async (token, password) => {
   const response = await axios.post(endpoint, data);
   return response.data;
 };
+
+
+
+
+///////////////////face rec///////////////////
+
+export const faceRecognition = async () => {
+  console.log("test" + "faaaace"); 
+
+  try {
+      // await axios.post(`http://localhost:3000/user/detect2`);
+
+      const response = await axios.post('http://localhost:3000/user/detect2');
+      // alert(response.data); // Affiche la réponse de l'API dans la console
+      return response.data; // Retourne la réponse de l'API
+
+      
+  } catch (error) {
+      console.log(error); 
+  }
+  
+};
+
+
+
+
+export const loginFaceRecognitionAPI = async (userid) => {
+//  alert("userid - >"+userid)
+
+  return  await axios.post(`http://localhost:3000/user/loginFaceRecognition?userid=${userid}`,userid).then((response) => {
+
+    // alert("response :  - >"+response.data)
+
+    localStorage.setItem("user", JSON.stringify(response.data));
+  });
+  
+
+
+}
+
+
+export const addImageFlaskAPI = async (imagedata) => {
+  console.log("image added flask")
+  return axios.post(`http://127.0.0.1:5000/add_profile_image`, imagedata);
+};
+
+
+
+

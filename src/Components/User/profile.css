@@ -1061,7 +1061,7 @@ button.bg-white:focus {
   /* height: 150px; */
   object-fit: cover; /* redimensionne l'image pour s'adapter à la forme de cercle */
   border-radius: 50%;
-  border: solid 10px #FF6B55;
+  border: solid 3px #FF6B55;
 }
 
 .d-none {
@@ -1069,7 +1069,7 @@ button.bg-white:focus {
 }
 
 .d-flex {
-  display: flex !important;
+  /* display: flex !important; */
 }
 
 @media (min-width: 768px) {

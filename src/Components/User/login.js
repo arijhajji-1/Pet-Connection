@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button } from 'react-bootstrap';
-import { login, loginGoogle } from "./api";
+import { login, loginGoogle,faceRecognition, loginFaceRecognitionAPI } from "./api";
 import { useNavigate } from "react-router-dom";
 import { NavLink, Routes, Route } from "react-router-dom";
 import jwt_decode from "jwt-decode";
@@ -9,6 +9,8 @@ import axios from "axios";
 import { facebookSuccess, loginSuccess } from './authActions';
 import { useDispatch } from 'react-redux';
 import ReCAPTCHA from "react-google-recaptcha";
+import Swal from 'sweetalert2'
+
 
 function Login() {
 
@@ -48,10 +50,12 @@ function Login() {
       };
 
       login(user).then(data => {
+
         if (JSON.parse(localStorage.getItem("user"))["isUserVerified"] == false) {
           setConfirmed(false);
           localStorage.removeItem("user");
         }
+
         if (JSON.parse(localStorage.getItem("user"))["active"] == true) {
          
           const twoFactorEnabled = JSON.parse(localStorage.getItem('user'))['twoFactorEnabled'];
@@ -81,13 +85,7 @@ function Login() {
         // console.log(data["data"].twoFactorEnabled)
 
       })
-
-
-
      }
-
-
-
   }
 
 
@@ -229,6 +227,8 @@ const responseFacebook = (response) => {
           navigate('/home');
           window.location.reload();
 
+
+
         }
 
       } else {
@@ -249,6 +249,124 @@ const responseFacebook = (response) => {
 //   );
 // };
 
+
+
+
+///////////////////////facial rec////////////////////
+
+
+
+const handleCapture = () => {
+
+
+
+  let timerInterval
+  Swal.fire({
+    title: 'Please wait for the facial recognition result !',
+    html: 'the result appears in <b></b> milliseconds ! ',
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: () => {
+      Swal.showLoading()
+      const b = Swal.getHtmlContainer().querySelector('b')
+      timerInterval = setInterval(() => {
+        b.textContent = Swal.getTimerLeft()
+      }, 100)
+    },
+    willClose: () => {
+      clearInterval(timerInterval)
+    }
+  }).then((result) => {
+    /* Read more about handling dismissals below */
+    if (result.dismiss === Swal.DismissReason.timer) {
+      console.log('I was closed by the timer')
+    }
+  })
+
+
+
+  faceRecognition().then((response) => {
+
+    if (response.result != null) {
+
+      const idUser = response.result.split(".")[0];
+
+      loginFaceRecognitionAPI(idUser).then((resp) => {
+
+
+
+
+        /////////////login////////////
+        if (JSON.parse(localStorage.getItem("user"))["isUserVerified"] == false) {
+          setConfirmed(false);
+          localStorage.removeItem("user");
+        }
+
+        if (JSON.parse(localStorage.getItem("user"))["active"] == true) {
+         
+          const twoFactorEnabled = JSON.parse(localStorage.getItem('user'))['twoFactorEnabled'];
+          console.log(localStorage.getItem("user"));
+          console.log(twoFactorEnabled)
+          if (twoFactorEnabled == true) {
+            // redirect user to 2FA verification page
+            navigate('/2faverify');
+          } else {
+            navigate('/home');
+            window.location.reload();
+
+
+
+
+          }
+  
+  
+          dispatch(loginSuccess(data))
+  
+          window.location.reload();
+         
+
+        } else {
+          setBanned(true); 
+          localStorage.removeItem("user");
+        }
+
+
+
+      })
+    }
+        //////////////////////////
+    else {
+
+      // alert("your face is not found ");
+      Swal.fire({
+        title: 'Your Face Is unKnown!',
+        text: 'Error !',
+        icon: 'error',
+        confirmButtonText: 'Oky'
+      })
+
+
+
+
+
+
+    }
+
+
+  })
+
+
+
+
+
+
+
+};
+
+
+
+
+////////////////////////////////////////////////////
 
 return (
   <>
@@ -385,6 +503,16 @@ return (
                     &nbsp;Log in
                   </button>
                 </form>
+                <button className="account-btn" style={{marginTop : '20px'}}
+                 onClick={handleCapture}
+                
+                
+                >
+                    <i className="fa fa-paw" aria-hidden="true"></i>
+                    &nbsp;login with facial recognition
+                  </button>
+
+
                 <div className="alternate-signup-box">
                   <h6>or signup WITH</h6>
                   <div className="btn-group gap-4">

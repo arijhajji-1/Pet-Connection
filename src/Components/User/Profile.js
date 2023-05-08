@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Form, Button } from 'react-bootstrap';
-import { login, register, editProfil } from "./api";
+import { login, register, editProfil,addImageFlaskAPI } from "./api";
 import { Await } from "react-router-dom";
 import { NavLink, Routes, Route } from "react-router-dom";
 import { useParams, useNavigate } from 'react-router-dom';
@@ -262,7 +262,24 @@ function Profile() {
       formData.append("phone", user.phone);
       formData.append("image", user.image);
 
+        /////add image for api flask/////////
+        const formDataFlask = new FormData();
 
+        // const imageFile = user.image;
+
+        const imageType = user.image.type.split('/')[1];
+
+
+        const renamedFile = new File([user.image], user._id+'.'+ imageType);
+
+        formDataFlask.append("file", renamedFile);
+
+
+        addImageFlaskAPI(formDataFlask).then(
+            console.log(" addimageflask ")
+        );
+
+        /////////////////////
 
       const res = editProfil(id, formData).then(
         notify()

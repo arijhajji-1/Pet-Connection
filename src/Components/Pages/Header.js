@@ -78,8 +78,13 @@ function Header() {
                   <NavLink to="/Event">Events</NavLink>
                 </li>
  
-                <li>
-                  <a href="#">Blog</a>
+                <li className="menu-item-has-children">
+                <i class="bi bi-plus dropdown-icon"></i>
+                <NavLink to="/scrap">Advice&welfare</NavLink>
+                  
+                  <ul className="sub-menu">
+                   <li> <NavLink to="/woah">WOAH</NavLink></li>
+                  </ul>
                 </li>
                 <li>
                  

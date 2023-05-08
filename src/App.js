@@ -27,6 +27,8 @@ import Leaderboard from "./Components/Pages/Crowdfunding/Leaderboard";
 import Verifications from "./Components/Pages/Association/Verifications";
 import RewardsList from "./Components/Pages/Rewards/RewardsList";
 //import PetAvatar from "./Components/Pages/Rewards/PetAvatar";
+const Woah=React.lazy(()=>import("./Components/MarketPlace/woah"));
+const Scrap=React.lazy(()=>import("./Components/MarketPlace/scrape"));
 
 
 
@@ -90,6 +92,8 @@ const Test = React.lazy(() => import("./Components/Blog/test"));
 
 const AddPublication = React.lazy(() => import("./Components/Blog/AddPublication"));
 const UpdatePublication = React.lazy(() => import("./Components/Blog/UpdatePublication"));
+
+const ChatDM = React.lazy(() => import("./Components/Pet/chatDM"));
 
 
 
@@ -295,6 +299,10 @@ function App() {
                 <Route exact path='/Predict' element={< Predict/>}></Route>
                 <Route exact path='/gallery' element={< Gallery/>}></Route>
                 <Route path='/addpet' element={<AddPet />}></Route> 
+                <Route exact path='/woah' element={<Woah />}></Route>
+          <Route exact path='/scrap' element={<Scrap />}></Route>
+          <Route path='/chatDM' element={<ChatDM />}></Route> 
+
                 </Routes>
               </Suspense>
               {/* <Loading /> */}
