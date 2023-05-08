@@ -175,7 +175,7 @@ function App() {
                 cursorSize={10}
                 ringBorder={2}
               /> */}
-                {/* <Header /> */}
+                <Header />
                 <Routes>
                   {/* <Route path="/shop" element={<Market />}></Route> */}
                   <Route path="/About" element={<About />}></Route>

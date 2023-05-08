@@ -43,7 +43,7 @@ const Predict = () => {
   const chatAPI = async (prediction) => {
     try {
       // Make a POST request to the chat API with the predicted breed
-      const response = await axios.post('http://127.0.0.1:3000/chat', { prompt: prediction });
+      const response = await axios.post('http://127.0.0.1:3000/description', { prompt: prediction });
       // Handle the response data
       console.log(response.data);
       setChatResponse(response.data);
