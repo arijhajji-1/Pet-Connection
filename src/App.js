@@ -17,7 +17,8 @@ import TwoFa from "./Components/User/TwoFa";
 //import TwoFactorVerification from "./Components/User/TwoFactorVerification";
 
 import { Cursor } from 'custom-pointer-react'
-import Association from "./Components/Pages/Association/Association";
+import Association from "./Components/Pages/Association/Association"; 
+import Meet from "./Components/Pages/Meet/Meet";
 import Crowdfunding from "./Components/Pages/Crowdfunding/Crowdfunding";
 import ConfirmDonation from "./Components/Pages/Crowdfunding/ConfirmDonation";
 import EditAssociation from "./Components/Pages/Association/EditAssociation";
@@ -156,8 +157,6 @@ function App() {
 
   return (
     <div className="App">
-
-
       {/* {isLoaded ? (
         <div className="loader-container">
 
@@ -165,154 +164,168 @@ function App() {
         </div>
       ) : ( */}
 
-        <>
-            <div>
-              <Suspense fallback={<div></div>}>
-                <ToastContainer/>
-                {/* <Cursor
+      <>
+        <div>
+          <Suspense fallback={<div></div>}>
+            <ToastContainer />
+            {/* <Cursor
                 showRing={true}
                 color="#000000"
                 ringSize={50}
                 cursorSize={10}
                 ringBorder={2}
               /> */}
-                <Header />
-                <Routes>
-                  {/* <Route path="/shop" element={<Market />}></Route> */}
-                  <Route path="/About" element={<About />}></Route>
-                  <Route path="/Event" element={<Event />}></Route>
-                  <Route path="/EventDetails/:id" element={<EventDetails />}></Route>
-                  <Route path="/UpdateEvent/:id" element={<UpdateEvent />}></Route>
-                  <Route path="/addEvent" element={<CreateEvent />}></Route>
-                  <Route exact path='/shop' element={<Shop />}></Route>
-                  <Route exact path='/cart/' element={<Cart />}></Route>
-                  <Route exact path='/details' element={<Details />}></Route>
-                  <Route exact path='/checkout' element={<Checkout />}></Route>
-                  <Route exact path='/payment' element={
-                    <Elements stripe={promise}>
-                      <Paymenet />
-                    </Elements>
-                  }></Route>
-                  {user == null && <Route path="/Login" element={<Login />}></Route>}
-                  {user == null && (
-                    <Route path="/Register" element={<Register />}></Route>
-                  )}
-                  {user && (
-                    <Route
-                      path="/2faenable"
-                      element={<EnableTwoFactorAuth />}
-                    ></Route>
-                  )}
-                  {user && (
-                    <Route
-                      path="/2fadisable"
-                      element={<DisableTwoFactorAuth />}
-                    ></Route>
-                  )}
-                  {user &&
-                    JSON.parse(localStorage.getItem("user"))["twoFactorEnabled"] && (
-                      <Route path="/2faverify" element={<TwoFa />} />
-                    )}{" "}
-
-
-
-
-
-
-
-                  {user && <Route path="/profile" element={<Profile />}></Route>}
-
-                  <Route path="/publications" element={<Publications />}></Route>
-
-                  <Route path="/detalsPublications/:idpub" element={<DetailsPublications />}></Route>
-
-                  <Route path="/AddPublication" element={<AddPublication />}></Route>
-
-                  <Route path="/UpdatePublication/:idpub" element={<UpdatePublication />}></Route>
-
-
-
-
-                  {/* <Route path="/PublicationComponent" element={<PublicationComponent />}></Route> */}
-
-
-
-
-
-
-
-
-                  <Route exact path='/emotion' element={<EmotionPrediction/>}></Route>
-                  <Route path="/ForgetPwd" element={<ForgetPwd />}></Route>
-                  <Route path="/resetPwd/:t" element={<ResetPwd />}></Route>
+            <Header />
+            <Routes>
+              {/* <Route path="/shop" element={<Market />}></Route> */}
+              <Route path="/About" element={<About />}></Route>
+              <Route path="/Event" element={<Event />}></Route>
+              <Route
+                path="/EventDetails/:id"
+                element={<EventDetails />}
+              ></Route>
+              <Route path="/UpdateEvent/:id" element={<UpdateEvent />}></Route>
+              <Route path="/addEvent" element={<CreateEvent />}></Route>
+              <Route exact path="/shop" element={<Shop />}></Route>
+              <Route exact path="/cart/" element={<Cart />}></Route>
+              <Route exact path="/details" element={<Details />}></Route>
+              <Route exact path="/checkout" element={<Checkout />}></Route>
+              <Route
+                exact
+                path="/payment"
+                element={
+                  <Elements stripe={promise}>
+                    <Paymenet />
+                  </Elements>
+                }
+              ></Route>
+              {user == null && (
+                <Route path="/Login" element={<Login />}></Route>
+              )}
+              {user == null && (
+                <Route path="/Register" element={<Register />}></Route>
+              )}
+              {user && (
+                <Route
+                  path="/2faenable"
+                  element={<EnableTwoFactorAuth />}
+                ></Route>
+              )}
+              {user && (
+                <Route
+                  path="/2fadisable"
+                  element={<DisableTwoFactorAuth />}
+                ></Route>
+              )}
+              {user &&
+                JSON.parse(localStorage.getItem("user"))[
+                  "twoFactorEnabled"
+                ] && <Route path="/2faverify" element={<TwoFa />} />}{" "}
+              {user && <Route path="/profile" element={<Profile />}></Route>}
+              <Route path="/publications" element={<Publications />}></Route>
+              <Route
+                path="/detalsPublications/:idpub"
+                element={<DetailsPublications />}
+              ></Route>
+              <Route
+                path="/AddPublication"
+                element={<AddPublication />}
+              ></Route>
+              <Route
+                path="/UpdatePublication/:idpub"
+                element={<UpdatePublication />}
+              ></Route>
+              {/* <Route path="/PublicationComponent" element={<PublicationComponent />}></Route> */}
+              <Route
+                exact
+                path="/emotion"
+                element={<EmotionPrediction />}
+              ></Route>
+              <Route path="/ForgetPwd" element={<ForgetPwd />}></Route>
+              <Route path="/resetPwd/:t" element={<ResetPwd />}></Route>
+              <Route
+                exact
+                path="/resetpassword/:token"
+                element={<ResetPwd />}
+              ></Route>
+              <Route path="/About" element={<About />}></Route>
+              <Route path="/associations" element={<AssociationList />}></Route>
+              <Route path="/meet" element={<Meet />}></Route>
+              <Route path="/association/:id" element={<Association />}></Route>
+              <Route
+                path="/crowdfunding/:id"
+                element={<Crowdfunding />}
+              ></Route>
+              {user && (
+                <>
                   <Route
-                    exact
-                    path="/resetpassword/:token"
-                    element={<ResetPwd />}
+                    path="/editCrowdfunding/:id"
+                    element={<EditCrowdfunding />}
                   ></Route>
-                  <Route path="/About" element={<About />}></Route>
-                  <Route path="/associations" element={<AssociationList />}></Route>
-                  <Route path="/association/:id" element={<Association />}></Route>
-                  <Route path="/crowdfunding/:id" element={<Crowdfunding />}></Route>
-                  {user && (
-                    <>
-                      <Route
-                        path="/editCrowdfunding/:id"
-                        element={<EditCrowdfunding />}
-                      ></Route>
 
-                      <Route path="/upgrade" element={<Upgrade />}></Route>
+                  <Route path="/upgrade" element={<Upgrade />}></Route>
 
-                      <Route
-                        path="/confirmDonation"
-                        element={<ConfirmDonation />}
-                      ></Route>
-                      <Route
-                        path="/editAssociation"
-                        element={<EditAssociation />}
-                      ></Route>
-                      <Route
-                        path="/addCrowdfunding"
-                        element={<AddCrowdfunding />}
-                      ></Route>
+                  <Route
+                    path="/confirmDonation"
+                    element={<ConfirmDonation />}
+                  ></Route>
+                  <Route
+                    path="/editAssociation"
+                    element={<EditAssociation />}
+                  ></Route>
+                  <Route
+                    path="/addCrowdfunding"
+                    element={<AddCrowdfunding />}
+                  ></Route>
 
-                      <Route path="/RewardsList" element={<RewardsList />}></Route>
-                      <Route path="/petavatar" element={<PetAvatar />}></Route>
+                  <Route path="/RewardsList" element={<RewardsList />}></Route>
+                  <Route path="/petavatar" element={<PetAvatar />}></Route>
 
-                      {role == "admin" && (
-                        <Route
-                          path="/verifications"
-                          element={<Verifications />}
-                        ></Route>
-                      )}
-                    </>
+                  {role == "admin" && (
+                    <Route
+                      path="/verifications"
+                      element={<Verifications />}
+                    ></Route>
                   )}
-                  <Route path="/leaderboard" element={<Leaderboard />}></Route>
-                  <Route path="*" element={<Home />}></Route>
-
-                  <Route exact path='/addlost' element={< AddLostAndfound/>}></Route>
-                <Route exact path='/listlost' element={< LostAndfound/>}></Route>
-                <Route exact path='/lostdetail/:id' element={< LostDetails/>}></Route>
-                <Route exact path='/lostdetail1/:id' element={< Comments/>}></Route>
-                <Route exact path='/chat' element={< Chatbot/>}></Route>
-                <Route exact path='/updatepet/:id' element={< Updatelost/>}></Route>
-                <Route exact path='/Predict' element={< Predict/>}></Route>
-                <Route exact path='/gallery' element={< Gallery/>}></Route>
-                <Route path='/addpet' element={<AddPet />}></Route> 
-                <Route exact path='/woah' element={<Woah />}></Route>
-          <Route exact path='/scrap' element={<Scrap />}></Route>
-          <Route path='/chatDM' element={<ChatDM />}></Route> 
-
-                </Routes>
-              </Suspense>
-              {/* <Loading /> */}
-            </div>
-          </>
+                </>
+              )}
+              <Route path="/leaderboard" element={<Leaderboard />}></Route>
+              <Route path="*" element={<Home />}></Route>
+              <Route
+                exact
+                path="/addlost"
+                element={<AddLostAndfound />}
+              ></Route>
+              <Route exact path="/listlost" element={<LostAndfound />}></Route>
+              <Route
+                exact
+                path="/lostdetail/:id"
+                element={<LostDetails />}
+              ></Route>
+              <Route
+                exact
+                path="/lostdetail1/:id"
+                element={<Comments />}
+              ></Route>
+              <Route exact path="/chat" element={<Chatbot />}></Route>
+              <Route
+                exact
+                path="/updatepet/:id"
+                element={<Updatelost />}
+              ></Route>
+              <Route exact path="/Predict" element={<Predict />}></Route>
+              <Route exact path="/gallery" element={<Gallery />}></Route>
+              <Route path="/addpet" element={<AddPet />}></Route>
+              <Route exact path="/woah" element={<Woah />}></Route>
+              <Route exact path="/scrap" element={<Scrap />}></Route>
+              <Route path="/chatDM" element={<ChatDM />}></Route>
+            </Routes>
+          </Suspense>
+          {/* <Loading /> */}
+        </div>
+      </>
       {/* )} */}
-
-
-    </div >
- 
+    </div>
   );
 }
 export default App;
