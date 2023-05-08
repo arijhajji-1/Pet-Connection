@@ -15,7 +15,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import Loading from "./Components/Pages/Loading";
 import TwoFa from "./Components/User/TwoFa";
 //import TwoFactorVerification from "./Components/User/TwoFactorVerification";
-
+import AddPodcast from "./Components/Podcasts/AddPodcast";
+import PodcastList from "./Components/Podcasts/PodcastList";
+import DetailsPodcast from "./Components/Podcasts/DetailsPodcast";
 import { Cursor } from 'custom-pointer-react'
 import Association from "./Components/Pages/Association/Association"; 
 import Meet from "./Components/Pages/Meet/Meet";
@@ -180,6 +182,9 @@ function App() {
               {/* <Route path="/shop" element={<Market />}></Route> */}
               <Route path="/About" element={<About />}></Route>
               <Route path="/Event" element={<Event />}></Route>
+              <Route path="/DetailsPodcast/:id" element={<DetailsPodcast/>}></Route>
+              <Route exact path='/podcast' element={<AddPodcast/>}></Route>
+                  <Route exact path='/podcasts' element={<PodcastList/>}></Route>
               <Route
                 path="/EventDetails/:id"
                 element={<EventDetails />}
